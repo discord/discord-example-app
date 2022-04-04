@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import express from 'express'
+import express, { json } from 'express'
 import axios from 'axios';
 import { InteractionType, InteractionResponseType } from 'discord-interactions';
 import { VerifyDiscordRequest, getRandomEmoji, ComponentType, ButtonStyle, DiscordAPI } from './utils.js';
@@ -25,6 +25,7 @@ let activeGames = {};
 app.post('/interactions', function (req, res) {
     // Interaction type and data
     let { type, id, data } = req.body;
+    console.log(type);
 
     /**
      * Handle verification requests
