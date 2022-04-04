@@ -82,7 +82,7 @@ export function getShuffledOptions() {
         // Formatted for select menus
         // https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
         options.push({
-            "label": capitalize(choice),
+            "label": capitalize(c),
             "value": c.toLowerCase(),
             "description": RPSChoices[c]["description"]
         });

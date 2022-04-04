@@ -25,7 +25,6 @@ let activeGames = {};
 app.post('/interactions', function (req, res) {
     // Interaction type and data
     let { type, id, data } = req.body;
-    console.log(type);
 
     /**
      * Handle verification requests
