@@ -30,7 +30,7 @@ app.post('/interactions', function (req, res) {
      * Handle verification requests
      */
     if (type === InteractionType.PING) {
-        return res.json({ "type": InteractionResponseType.PONG });
+        return res.send({ "type": InteractionResponseType.PONG });
     }
 
     /**
