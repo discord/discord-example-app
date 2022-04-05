@@ -2,6 +2,8 @@
 
 This project contains a basic rock-paper-scissors-style Discord app written in JavaScript, built for the [getting started guide](TODO).
 
+![Demo of app](/assets/getting-started-demo.gif?raw=true)
+
 > ✨ A version of this code is also hosted **[on Glitch 🎏](https://glitch.com/edit/#!/getting-started-discord)**.
 
 ## Project structure
