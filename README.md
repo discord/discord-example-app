@@ -1,6 +1,6 @@
 # Getting Started app for Discord
 
-This project contains a basic rock-paper-scissors-style Discord app written in JavaScript, built for the [getting started guide](TODO).
+This project contains a basic rock-paper-scissors-style Discord app written in JavaScript, built for the [getting started guide](https://discord.com/developers/docs/getting-started).
 
 ![Demo of app](/assets/getting-started-demo.gif?raw=true)
 
@@ -31,7 +31,7 @@ Before you start, you'll need to [create a Discord app](https://discord.com/deve
 - `applications.commands`
 - `bot` (with Send Messages and Use Slash Commands enabled)
 
-Configuring the app is covered in detail in [the getting started guide](TODO).
+Configuring the app is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
 ### Setup project
 
 First clone the project:
@@ -48,7 +48,7 @@ npm install
 
 Fetch the credentials from your app's settings and add them to a `.env` file (see `.env.sample` for an example). You'll need your app ID (`APP_ID`), server ID (`GUILD_ID`), bot token (`DISCORD_TOKEN`), and public key (`PUBLIC_KEY`).
 
-Fetching credentials is covered in detail in [the getting started guide](TODO).
+Fetching credentials is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
 
 ### Run the app
 
