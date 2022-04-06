@@ -13,9 +13,9 @@ async function HasGuildCommand(client, appId, guildId, command) {
     const url = DiscordAPI(`applications/${appId}/guilds/${guildId}/commands`);
 
     try {
-        let { data } = await client({ url, method: 'get'});
+        const { data } = await client({ url, method: 'get'});
         if (data) {
-            let installedNames = data.map((c) => c["name"]);
+            const installedNames = data.map((c) => c["name"]);
             // This is just matching on the name, so it's not good for updates
             if (!installedNames.includes(command["name"])) {
                 await InstallGuildCommand(client, appId, guildId, command);
@@ -38,8 +38,8 @@ export async function InstallGuildCommand(client, appId, guildId, command) {
 
 // Get the game choices from game.js
 function createCommandChoices() {
-    let choices = getRPSChoices();
-    let commandChoices = [];
+    const choices = getRPSChoices();
+    const commandChoices = [];
 
     for (let choice of choices) {
         commandChoices.push({

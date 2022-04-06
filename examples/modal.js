@@ -10,7 +10,7 @@ app.use(express.json({verify: VerifyDiscordRequest(process.env.PUBLIC_KEY)}));
 
 app.post('/interactions', function (req, res) {
     // Interaction type and data
-    let { type, data } = req.body;
+    const { type, data } = req.body;
     /**
      * Handle slash command requests
      */
@@ -60,9 +60,9 @@ app.post('/interactions', function (req, res) {
      */
      if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
         // custom_id of modal
-        let modalId = data.custom_id;
+        const modalId = data.custom_id;
         // user ID of member who filled out modal
-        let userId = req.body.member.user.id;
+        const userId = req.body.member.user.id;
 
         if (modalId === 'my_modal') {
             let modalValues = '';

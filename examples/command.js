@@ -10,7 +10,7 @@ app.use(express.json({verify: VerifyDiscordRequest(process.env.PUBLIC_KEY)}));
 
 app.post('/interactions', function (req, res) {
     // Interaction type and data
-    let { type, data } = req.body;
+    const { type, data } = req.body;
     /**
      * Handle slash command requests
      */
@@ -27,8 +27,8 @@ app.post('/interactions', function (req, res) {
 });
 
 function createCommand() {
-    let appId = process.env.APP_ID;
-    let guildId = process.env.GUILD_ID;
+    const appId = process.env.APP_ID;
+    const guildId = process.env.GUILD_ID;
     
     /**
      * Globally-scoped slash commands (generally only recommended for production)
@@ -41,7 +41,7 @@ function createCommand() {
      * See https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
      */
     const guildUrl = DiscordAPI(`applications/${appId}/guilds/${guildId}/commands`);
-    let commandBody = {
+    const commandBody = {
         "name": "test",
         "description": "Just your average command",
         // chat command (see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types)

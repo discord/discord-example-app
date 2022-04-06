@@ -17,7 +17,7 @@ export function getResult(p1, p2) {
 }
 
 function formatResult(result) {
-    let { win, lose, verb } = result;
+    const { win, lose, verb } = result;
     return verb === 'tie' ? 
         `<@${win.id}> and <@${lose.id}> draw with **${win.objectName}**` :
         `<@${win.id}>'s **${win.objectName}** ${verb} <@${lose.id}>'s **${lose.objectName}**`;
@@ -75,8 +75,8 @@ export function getRPSChoices() {
 
 // Function to fetch shuffled options for select menu
 export function getShuffledOptions() {
-    let allChoices = getRPSChoices();
-    let options = [];
+    const allChoices = getRPSChoices();
+    const options = [];
 
     for (let c of allChoices) {
         // Formatted for select menus

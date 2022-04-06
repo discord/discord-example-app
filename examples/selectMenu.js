@@ -9,7 +9,7 @@ app.use(express.json({verify: VerifyDiscordRequest(process.env.PUBLIC_KEY)}));
 
 app.post('/interactions', function (req, res) {
     // Interaction type and data
-    let { type, data } = req.body;
+    const { type, data } = req.body;
     /**
      * Handle slash command requests
      */
@@ -53,14 +53,14 @@ app.post('/interactions', function (req, res) {
      */
     if (type === InteractionType.MESSAGE_COMPONENT){
         // custom_id set in payload when sending message component
-        let componentId = data.custom_id;
+        const componentId = data.custom_id;
 
         if (componentId === 'my_select') {
             console.log(req.body);
 
             // Get selected option from payload
-            let selectedOption = data.values[0];
-            let userId = req.body.member.user.id;
+            const selectedOption = data.values[0];
+            const userId = req.body.member.user.id;
 
             // Send results
             return res.send({

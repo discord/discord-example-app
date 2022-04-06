@@ -16,7 +16,7 @@ export function DiscordAPI(url) { return 'https://discord.com/api/v9/' + url };
 
 // Simple method that returns a random emoji from list
 export function getRandomEmoji() {
-  let emojiList = ['😭', '😄', '😌', '🤓', '😎', '😤', '🤖', '😶‍🌫️', '🌏', '📸', '💿', '👋', '🌊', '✨'];
+  const emojiList = ['😭', '😄', '😌', '🤓', '😎', '😤', '🤖', '😶‍🌫️', '🌏', '📸', '💿', '👋', '🌊', '✨'];
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 }
 
