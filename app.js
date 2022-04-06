@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import express, { json } from 'express'
+import express from 'express'
 import axios from 'axios';
 import { InteractionType, InteractionResponseType } from 'discord-interactions';
 import { VerifyDiscordRequest, getRandomEmoji, ComponentType, ButtonStyle, DiscordAPI } from './utils.js';

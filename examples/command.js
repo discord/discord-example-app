@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import { InteractionType, InteractionResponseType } from 'discord-interactions';
-import { VerifyDiscordRequest } from './utils.js';
+import { VerifyDiscordRequest, DiscordAPI } from '../utils.js';
 import axios from 'axios';
 
 // Create and configure express app
