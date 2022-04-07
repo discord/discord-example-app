@@ -1,10 +1,10 @@
 import { getRPSChoices } from "./game.js";
 import { capitalize, DiscordAPI } from "./utils.js";
 
-export function HasGuildCommands(client, appId, guildId, commands) {
+export async function HasGuildCommands(client, appId, guildId, commands) {
     if (guildId === '' || appId === '') return;
 
-    commands.forEach((c) => HasGuildCommand(client, appId, guildId, c));
+    commands.forEach(c => HasGuildCommand(client, appId, guildId, c));
 }
 
 // Checks for a command
@@ -18,7 +18,7 @@ async function HasGuildCommand(client, appId, guildId, command) {
             const installedNames = data.map((c) => c["name"]);
             // This is just matching on the name, so it's not good for updates
             if (!installedNames.includes(command["name"])) {
-                await InstallGuildCommand(client, appId, guildId, command);
+                InstallGuildCommand(client, appId, guildId, command);
             } else {
                 console.log(`"${command["name"]}" command already installed`)
             }
@@ -33,7 +33,11 @@ export async function InstallGuildCommand(client, appId, guildId, command) {
     // API URL to get and post guild commands
     const url = DiscordAPI(`applications/${appId}/guilds/${guildId}/commands`);
     // install command
-    return client({ url, method: 'post', data: command});
+    try {
+        await client({ url, method: 'post', data: command});
+    } catch (e) {
+        console.error(`Error installing guild command: ${e}`);
+    }
 }
 
 // Get the game choices from game.js
