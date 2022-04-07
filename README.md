@@ -29,7 +29,7 @@ Below is a basic overview of the project structure:
 
 Before you start, you'll need to [create a Discord app](https://discord.com/developers/applications) with the proper permissions:
 - `applications.commands`
-- `bot` (with Send Messages and Use Slash Commands enabled)
+- `bot` (with Send Messages enabled)
 
 Configuring the app is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
 ### Setup project
