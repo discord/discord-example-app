@@ -1,3 +1,5 @@
+import 'dotenv/config';
+import fetch from 'node-fetch';
 import { verifyKey } from 'discord-interactions';
 
 export function VerifyDiscordRequest(clientKey) {
@@ -10,32 +12,45 @@ export function VerifyDiscordRequest(clientKey) {
       res.status(401).send('Bad request signature');
       throw new Error('Bad request signature');
     }
-  }
+  };
 }
 
-export function DiscordAPI(url) { return 'https://discord.com/api/v9/' + url };
+export function DiscordRequest(endpoint, options) {
+  // append endpoint to root API URL
+  const url = 'https://discord.com/api/v9/' + endpoint;
+  // Stringify payloads
+  if (options.body) options.body = JSON.stringify(options.body);
+  // Use node-fetch to make requests
+  return fetch(url, {
+	  headers: {
+      Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    ...options
+  });
+}
 
 // Simple method that returns a random emoji from list
 export function getRandomEmoji() {
-  const emojiList = ['😭', '😄', '😌', '🤓', '😎', '😤', '🤖', '😶‍🌫️', '🌏', '📸', '💿', '👋', '🌊', '✨'];
+  const emojiList = ['😭','😄','😌','🤓','😎','😤','🤖','😶‍🌫️','🌏','📸','💿','👋','🌊','✨'];
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 }
 
 export function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export const ComponentType = {
-    ACTION: 1,
-    BUTTON: 2,
-    SELECT: 3,
-    INPUT: 4
-}
+  ACTION: 1,
+  BUTTON: 2,
+  SELECT: 3,
+  INPUT: 4,
+};
 
 export const ButtonStyle = {
-    PRIMARY: 1,
-    SECONDARY: 2,
-    SUCCESS: 3,
-    DANGER: 4,
-    LINK: 5
-}
+  PRIMARY: 1,
+  SECONDARY: 2,
+  SUCCESS: 3,
+  DANGER: 4,
+  LINK: 5,
+};
