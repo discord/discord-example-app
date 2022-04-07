@@ -58,7 +58,7 @@ function createCommand() {
         });
         console.log(res.body);
     } catch (err) {
-        console.error(`Error installing command: ${err}`)
+        console.error('Error installing commands: ', err);
     }
     
 }

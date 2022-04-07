@@ -117,9 +117,8 @@ app.post('/interactions', async function (req, res) {
                 });
 
                 await client({ url, method: 'delete' });
-                return;
             } catch (err) {
-                console.error(`Error sending message: ${err}`);
+                console.error('Error sending message:', err);
             }
         } else if (componentId.startsWith('select_choice_')) {
             // get the associated game ID
@@ -145,12 +144,11 @@ app.post('/interactions', async function (req, res) {
                     });
 
                     await client({ url, method: 'patch', data: {
-                        "content": `Nice choice ${getRandomEmoji()}`,
+                        "content": "Nice choice " + getRandomEmoji(),
                         "components": []
                     }});
-                    return;
                 } catch (err) {
-                    console.error(`Error sending message: ${err}`);
+                    console.error('Error sending message:', err);
                 }      
             }
         }

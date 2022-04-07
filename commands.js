@@ -23,8 +23,8 @@ async function HasGuildCommand(client, appId, guildId, command) {
                 console.log(`"${command["name"]}" command already installed`)
             }
         }
-    } catch (e) {
-        console.error(`Error installing commands: ${e}`)
+    } catch (err) {
+        console.error('Error installing commands: ', err);
     }
 }
 
@@ -35,8 +35,8 @@ export async function InstallGuildCommand(client, appId, guildId, command) {
     // install command
     try {
         await client({ url, method: 'post', data: command});
-    } catch (e) {
-        console.error(`Error installing guild command: ${e}`);
+    } catch (err) {
+        console.error('Error installing commands: ', err);
     }
 }
 
