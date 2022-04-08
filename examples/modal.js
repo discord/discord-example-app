@@ -1,7 +1,11 @@
 import 'dotenv/config';
 import express from 'express';
-import { InteractionType, InteractionResponseType } from 'discord-interactions';
-import { VerifyDiscordRequest, ComponentType } from '../utils.js';
+import {
+  InteractionType,
+  InteractionResponseType,
+  MessageComponentTypes,
+} from 'discord-interactions';
+import { VerifyDiscordRequest } from '../utils.js';
 
 // Create and configure express app
 const app = express();
@@ -25,11 +29,11 @@ app.post('/interactions', function (req, res) {
           components: [
             {
               // Text inputs must be inside of an action component
-              type: ComponentType.ACTION,
+              type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
                   // See https://discord.com/developers/docs/interactions/message-components#text-inputs-text-input-structure
-                  type: ComponentType.INPUT,
+                  type: MessageComponentTypes.INPUT_TEXT,
                   custom_id: 'my_text',
                   style: 1,
                   label: 'Type some text',
@@ -37,10 +41,10 @@ app.post('/interactions', function (req, res) {
               ],
             },
             {
-              type: ComponentType.ACTION,
+              type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
-                  type: ComponentType.INPUT,
+                  type: MessageComponentTypes.INPUT_TEXT,
                   custom_id: 'my_longer_text',
                   // Bigger text box for input
                   style: 2,

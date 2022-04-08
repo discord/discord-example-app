@@ -10,7 +10,7 @@
   "author": "Shay DeWael",
   "license": "MIT",
   "dependencies": {
-    "discord-interactions": "^3.1.0",
+    "discord-interactions": "^3.2.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "node-fetch": "^3.2.3"

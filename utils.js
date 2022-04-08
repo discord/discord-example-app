@@ -39,18 +39,3 @@ export function getRandomEmoji() {
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
-export const ComponentType = {
-  ACTION: 1,
-  BUTTON: 2,
-  SELECT: 3,
-  INPUT: 4,
-};
-
-export const ButtonStyle = {
-  PRIMARY: 1,
-  SECONDARY: 2,
-  SUCCESS: 3,
-  DANGER: 4,
-  LINK: 5,
-};

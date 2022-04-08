@@ -1,7 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
-import { InteractionType, InteractionResponseType } from 'discord-interactions';
-import { VerifyDiscordRequest, ComponentType, ButtonStyle } from '../utils.js';
+import {
+  InteractionType,
+  InteractionResponseType,
+  MessageComponentTypes,
+  ButtonStyleTypes,
+} from 'discord-interactions';
+import { VerifyDiscordRequest } from '../utils.js';
 
 // Create and configure express app
 const app = express();
@@ -24,14 +29,14 @@ app.post('/interactions', function (req, res) {
           // Buttons are inside of action rows
           components: [
             {
-              type: ComponentType.ACTION,
+              type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
-                  type: ComponentType.BUTTON,
+                  type: MessageComponentTypes.BUTTON,
                   // Value for your app to identify the button
                   custom_id: 'my_button',
                   label: 'Click',
-                  style: ButtonStyle.PRIMARY,
+                  style: ButtonStyleTypes.PRIMARY,
                 },
               ],
             },

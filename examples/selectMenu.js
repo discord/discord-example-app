@@ -1,7 +1,11 @@
 import 'dotenv/config';
 import express from 'express';
-import { InteractionType, InteractionResponseType } from 'discord-interactions';
-import { VerifyDiscordRequest, ComponentType } from '../utils.js';
+import {
+  InteractionType,
+  InteractionResponseType,
+  MessageComponentTypes,
+} from 'discord-interactions';
+import { VerifyDiscordRequest } from '../utils.js';
 
 // Create and configure express app
 const app = express();
@@ -24,10 +28,10 @@ app.post('/interactions', function (req, res) {
           // Selects are inside of action rows
           components: [
             {
-              type: ComponentType.ACTION,
+              type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
-                  type: ComponentType.SELECT,
+                  type: MessageComponentTypes.STRING_SELECT,
                   // Value for your app to identify the select menu interactions
                   custom_id: 'my_select',
                   // Select options - see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
