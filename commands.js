@@ -15,17 +15,19 @@ async function HasGuildCommand(appId, guildId, command) {
   try {
     const res = await DiscordRequest(endpoint, { method: 'GET' });
     const data = await res.json();
+
     if (data) {
       const installedNames = data.map((c) => c['name']);
       // This is just matching on the name, so it's not good for updates
       if (!installedNames.includes(command['name'])) {
+        console.log(`Installing "${command['name']}"`);
         InstallGuildCommand(appId, guildId, command);
       } else {
         console.log(`"${command['name']}" command already installed`);
       }
     }
   } catch (err) {
-    console.error('Error installing commands: ', err);
+    console.error(err);
   }
 }
 
@@ -37,7 +39,7 @@ export async function InstallGuildCommand(appId, guildId, command) {
   try {
     await DiscordRequest(endpoint, { method: 'POST', body: command });
   } catch (err) {
-    console.error('Error installing commands: ', err);
+    console.error(err);
   }
 }
 
