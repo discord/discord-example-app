@@ -1,0 +1,4 @@
+language = "nodejs"
+onBoot="npm install"
+entrypoint = "app.js"
+run = "npm start"
