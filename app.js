@@ -17,6 +17,8 @@ import {
 
 // Create an express app
 const app = express();
+// Get port, or default to 3000
+const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
@@ -173,8 +175,8 @@ app.post('/interactions', async function (req, res) {
   }
 });
 
-app.listen(3000, () => {
-  console.log('Listening on port 3000');
+app.listen(PORT, () => {
+  console.log('Listening on port', PORT);
 
   // Check if guild commands from commands.json are installed (if not, install them)
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [

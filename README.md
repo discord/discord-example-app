@@ -4,7 +4,7 @@ This project contains a basic rock-paper-scissors-style Discord app written in J
 
 ![Demo of app](/assets/getting-started-demo.gif?raw=true)
 
-> ✨ A version of this code is also hosted **[on Glitch 🎏](https://glitch.com/edit/#!/getting-started-discord)**.
+> ✨ A version of this code is also hosted **[on Glitch 🎏](https://glitch.com/~getting-started-discord)** and **[on Replit 🌀](https://replit.com/@shaydewael/discord-example-app)**
 
 ## Project structure
 Below is a basic overview of the project structure:
@@ -49,6 +49,8 @@ npm install
 Fetch the credentials from your app's settings and add them to a `.env` file (see `.env.sample` for an example). You'll need your app ID (`APP_ID`), server ID (`GUILD_ID`), bot token (`DISCORD_TOKEN`), and public key (`PUBLIC_KEY`).
 
 Fetching credentials is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
+
+> 🔑 Environment variables can be added to the `.env` file in Glitch or when developing locally, and in the Secrets tab in Replit (the lock icon on the left).
 
 ### Run the app
 
