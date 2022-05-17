@@ -41,7 +41,7 @@ git clone https://github.com/discord/discord-example-app.git
 
 Then navigate to its directory and install dependencies:
 ```
-cd discord-getting-started
+cd discord-example-app
 npm install
 ```
 ### Get app credentials

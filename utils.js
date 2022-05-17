@@ -17,7 +17,7 @@ export function VerifyDiscordRequest(clientKey) {
 
 export async function DiscordRequest(endpoint, options) {
   // append endpoint to root API URL
-  const url = 'https://discord.com/api/v9/' + endpoint;
+  const url = 'https://discord.com/api/v10/' + endpoint;
   // Stringify payloads
   if (options.body) options.body = JSON.stringify(options.body);
   // Use node-fetch to make requests
@@ -25,6 +25,7 @@ export async function DiscordRequest(endpoint, options) {
     headers: {
       Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
       'Content-Type': 'application/json; charset=UTF-8',
+      'User-Agent': 'DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)',
     },
     ...options
   });
