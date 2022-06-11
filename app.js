@@ -69,6 +69,7 @@ app.post('/interactions', async function (req, res) {
         objectName,
       };
 
+      // Send results
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
