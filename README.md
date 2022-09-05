@@ -57,7 +57,7 @@ Fetching credentials is covered in detail in the [getting started guide](https:/
 After your credentials are added, go ahead and run the app:
 
 ```
-node app.js
+yarn dev
 ```
 
 > ⚙️ A package [like `nodemon`](https://github.com/remy/nodemon), which watches for local changes and restarts your app, may be helpful while locally developing.
