@@ -1,0 +1,25 @@
+const math = require('mathjs');
+const Discord = require('discord.js')
+
+exports.run = (client, message, args, tools) => {
+ 
+  if (!args[0]) return message.channel.send(new Discord.MessageEmbed().setTitle("Lütfen hesaplanacak bir şeyler yaz!").setTimestamp().setFooter("virgul.net BOT", client.user.displayAvatarURL()))
+ 
+  let resp;
+ 
+  try {
+    resp = math.evaluate(args.join(''));
+  } catch (e) {
+    return message.channel.send(new Discord.MessageEmbed().setTitle("Lütfen hesaplanacak bir şeyler yaz!").setTimestamp().setFooter("virgul.net BOT", client.user.displayAvatarURL()))
+  }
+ 
+  const embed = new Discord.MessageEmbed()
+    .setTitle("Hesap Makinesi")
+    .addField(`Girdi`, `\`\`\`js\n${args.join(``)}\`\`\``)
+    .addField(`Çıktı`, `\`\`\`js\n${resp}\`\`\``)
+    .setTimestamp()
+    .setFooter("virgul.net BOT", client.user.displayAvatarURL())
+ 
+  message.channel.send(embed);
+ 
+}
