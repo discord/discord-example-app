@@ -27,11 +27,13 @@ Below is a basic overview of the project structure:
 
 ## Running app locally
 
-Before you start, you'll need to [create a Discord app](https://discord.com/developers/applications) with the proper permissions:
+Before you start, you'll need to install [NodeJS](https://nodejs.org/en/download/) and [create a Discord app](https://discord.com/developers/applications) with the proper permissions:
 - `applications.commands`
 - `bot` (with Send Messages enabled)
 
+
 Configuring the app is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
+
 ### Setup project
 
 First clone the project:
@@ -51,6 +53,7 @@ Fetch the credentials from your app's settings and add them to a `.env` file (se
 Fetching credentials is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
 
 > 🔑 Environment variables can be added to the `.env` file in Glitch or when developing locally, and in the Secrets tab in Replit (the lock icon on the left).
+>  Environment variables can be added to the `.env` file in Glitch or when developing locally, and in the Secrets tab in Replit (the lock icon on the left).
 
 ### Run the app
 
