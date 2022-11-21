@@ -4,7 +4,7 @@ This project contains a basic rock-paper-scissors-style Discord app written in J
 
 ![Demo of app](/assets/getting-started-demo.gif?raw=true)
 
-> ✨ A version of this code is also hosted **[on Glitch 🎏](https://glitch.com/~getting-started-discord)** and **[on Replit 🌀](https://replit.com/@shaydewael/discord-example-app)**
+> ✨ A version of this code is also hosted **[on Glitch 🎏](https://glitch.com/~getting-started-discord)** and **[on Replit 🌀](https://replit.com/github/discord/discord-example-app)**
 
 ## Project structure
 Below is a basic overview of the project structure:
