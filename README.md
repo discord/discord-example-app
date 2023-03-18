@@ -11,6 +11,7 @@ Below is a basic overview of the project structure:
 
 ```
 ├── examples    -> short, feature-specific sample apps
+│   ├── app.js  -> finished app.js code
 │   ├── button.js
 │   ├── command.js
 │   ├── modal.js
@@ -71,6 +72,8 @@ node app.js
 ```
 
 > ⚙️ A package [like `nodemon`](https://github.com/remy/nodemon), which watches for local changes and restarts your app, may be helpful while locally developing.
+
+If you aren't following the [getting started guide](https://discord.com/developers/docs/getting-started), you can move the contents of `examples/app.js` (the finished `app.js` file) to the top-level `app.js`.
 
 ### Set up interactivity
 
