@@ -1,11 +1,12 @@
 {
   "name": "getting-started",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discord example app",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "start": "node app.js",
+    "register": "node commands.js",
     "dev": "nodemon app.js"
   },
   "author": "Shay DeWael",
