@@ -11,6 +11,7 @@ Below is a basic overview of the project structure:
 
 ```
 ├── examples    -> short, feature-specific sample apps
+│   ├── app.js  -> finished app.js code
 │   ├── button.js
 │   ├── command.js
 │   ├── modal.js
@@ -48,11 +49,19 @@ npm install
 ```
 ### Get app credentials
 
-Fetch the credentials from your app's settings and add them to a `.env` file (see `.env.sample` for an example). You'll need your app ID (`APP_ID`), server ID (`GUILD_ID`), bot token (`DISCORD_TOKEN`), and public key (`PUBLIC_KEY`).
+Fetch the credentials from your app's settings and add them to a `.env` file (see `.env.sample` for an example). You'll need your app ID (`APP_ID`), bot token (`DISCORD_TOKEN`), and public key (`PUBLIC_KEY`).
 
 Fetching credentials is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
 
 > 🔑 Environment variables can be added to the `.env` file in Glitch or when developing locally, and in the Secrets tab in Replit (the lock icon on the left).
+
+### Install slash commands
+
+The commands for the example app are set up in `commands.js`. All of the commands in the `ALL_COMMANDS` array at the bottom of `commands.js` will be installed when you run the `register` command configured in `package.json`:
+
+```
+npm run register
+```
 
 ### Run the app
 
@@ -63,6 +72,8 @@ node app.js
 ```
 
 > ⚙️ A package [like `nodemon`](https://github.com/remy/nodemon), which watches for local changes and restarts your app, may be helpful while locally developing.
+
+If you aren't following the [getting started guide](https://discord.com/developers/docs/getting-started), you can move the contents of `examples/app.js` (the finished `app.js` file) to the top-level `app.js`.
 
 ### Set up interactivity
 
