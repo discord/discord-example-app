@@ -4,6 +4,9 @@
   "description": "Discord example app",
   "main": "app.js",
   "type": "module",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "node app.js",
     "register": "node commands.js",
