@@ -9,6 +9,7 @@ import {
 } from 'discord-interactions';
 import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
+import { searchBooks } from './lib/goodreads_search.js';
 
 // Create an express app
 const app = express();
@@ -26,6 +27,8 @@ const activeGames = {};
 app.post('/interactions', async function (req, res) {
   // Interaction type and data
   const { type, id, data } = req.body;
+
+  console.log(type, id, data);
 
   /**
    * Handle verification requests
@@ -51,6 +54,23 @@ app.post('/interactions', async function (req, res) {
           content: 'hello world ' + getRandomEmoji(),
         },
       });
+    } else if (name === 'booksearch') {
+      const searchQuery = data.options[0].value;
+      const searchResults = await searchBooks(searchQuery);
+      const books = [];
+      if (searchResults.books) {
+        books.push(...searchResults.books.slice(0, 3).map((book, i) => {
+          return `${i+1}) ${book.title} by ${book.author} can be found at: ${book.url}`;
+        }));
+      }
+      
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `You searched for ${searchQuery}. The top results I got:\n` 
+          + books.join('\n'),
+        }
+      })
     }
   }
 });

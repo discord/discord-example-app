@@ -40,6 +40,19 @@ const CHALLENGE_COMMAND = {
   type: 1,
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
+const BOOK_SEARCH = {
+  name: 'booksearch',
+  description: 'Search Goodreads for a book',
+  options: [
+    {
+      type: 3,
+      name: 'query',
+      description: 'Search query',
+      required: true,
+    }
+  ]
+}
+
+const ALL_COMMANDS = [TEST_COMMAND, BOOK_SEARCH];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
