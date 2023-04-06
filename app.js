@@ -8,8 +8,7 @@ import {
   ButtonStyleTypes,
 } from 'discord-interactions';
 import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest } from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
-import { searchBooks } from './lib/goodreads_search.js';
+import { getBookData, searchBooks } from './lib/goodreads_search.js';
 
 // Create an express app
 const app = express();
@@ -18,8 +17,12 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-// Store for in-progress games. In production, you'd want to use a DB
-const activeGames = {};
+// Some in-memory state for the time being
+const bookClubState = {
+  shortlist: {
+    books: [],
+  },
+};
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -81,6 +84,70 @@ app.post('/interactions', async function (req, res) {
           }
         });
       }
+    } else if (name === 'shortlist') {
+      const subCommand = data.options[0].name;
+      if (subCommand === 'list') {
+        const books = bookClubState.shortlist.books.map((book, i) => {
+          return `${i+1}) ${book.title} by ${book.author} (${book.url}).`;
+        });
+
+        const booksList = books.length > 0 
+          ? books.join('\n') 
+          : 'No books in the shortlist yet! Add some with "/shortlist add <Goodreads url>"';
+
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'This is the current shortlist:\n' + booksList,
+          }
+        });
+      } else if (subCommand === 'add') {
+        const url = data.options[0].options[0].value;
+        const book = await getBookData(url);
+
+        if (book !== null) {
+          bookClubState.shortlist.books.push({
+            title: book.title,
+            author: book.author,
+            url: book.url,
+          });
+
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: 'The following book was added to the shortlist:\n' + 
+                `${book.title} by ${book.author} (${book.url}).`
+            }
+          });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: 'Mehhh.. I couldn\'t find the book.',
+            }
+          });
+        }
+      } else if (subCommand === 'remove') {
+        const removeIndex = data.options[0].options[0].value - 1;
+        if (removeIndex >= 0 && removeIndex < bookClubState.shortlist.books.length) {
+          const [book] = bookClubState.shortlist.books.splice(removeIndex, 1);
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: 'Removed this book from the shortlist:\n' + 
+                `${book.title} by ${book.author} (${book.url}).`
+            }
+          });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: 'Uh, we don\'t have a book with that number on our shortlist!',
+            }
+          });
+        }
+      }
+
     }
   }
 });

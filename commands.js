@@ -1,44 +1,5 @@
 import 'dotenv/config';
-import { getRPSChoices } from './game.js';
-import { capitalize, InstallGlobalCommands } from './utils.js';
-
-// Get the game choices from game.js
-function createCommandChoices() {
-  const choices = getRPSChoices();
-  const commandChoices = [];
-
-  for (let choice of choices) {
-    commandChoices.push({
-      name: capitalize(choice),
-      value: choice.toLowerCase(),
-    });
-  }
-
-  return commandChoices;
-}
-
-// Simple test command
-const TEST_COMMAND = {
-  name: 'test',
-  description: 'Basic command',
-  type: 1,
-};
-
-// Command containing options
-const CHALLENGE_COMMAND = {
-  name: 'challenge',
-  description: 'Challenge to a match of rock paper scissors',
-  options: [
-    {
-      type: 3,
-      name: 'object',
-      description: 'Pick your object',
-      required: true,
-      choices: createCommandChoices(),
-    },
-  ],
-  type: 1,
-};
+import { InstallGlobalCommands } from './utils.js';
 
 const BOOK_SEARCH = {
   name: 'booksearch',
@@ -53,6 +14,50 @@ const BOOK_SEARCH = {
   ]
 }
 
-const ALL_COMMANDS = [TEST_COMMAND, BOOK_SEARCH];
+// shortlist list
+// shortlist add <url>
+// shortlist remove <entry number>
+const BOOK_SHORTLIST = {
+  name: 'shortlist',
+  description: 'Manage shortlist of books to be considered',
+  options: [
+    {
+      name: 'list',
+      description: 'Show the current shortlist!',
+      type: 1, // sub command
+    },
+    {
+      name: 'add',
+      description: 'Add a book to the shortlist',
+      type: 1, // sub command
+      options: [
+        {
+          type: 3,
+          name: 'book_url',
+          description: 'The Goodreads URL of the book',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'remove',
+      description: 'Remove book at the given entry number from to the shortlist',
+      type: 1, // sub command
+      options: [
+        {
+          type: 4,
+          name: 'entry_number',
+          description: 'The entry number in the shortlist',
+          required: true,
+        },
+      ],
+    },
+  ],
+};
+
+const ALL_COMMANDS = [
+  BOOK_SEARCH,
+  BOOK_SHORTLIST,
+];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
