@@ -1,2 +1,8 @@
+#node
 node_modules
+
+#secrets
 .env
+
+#editors
+.vscode
