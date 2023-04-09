@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
 import { Book } from '../types/book.js';
 
-export async function scrapeBookFromUrl(url: string): Promise<Book> {
+export async function scrapeBookFromUrl(url: string): Promise<Book | null> {
     let browser = null;
 
     try {
@@ -35,6 +35,7 @@ export async function scrapeBookFromUrl(url: string): Promise<Book> {
         return result;
     } catch (error) {
         console.error('Error scraping book from URL', error);
+        return null;
     } finally {
         if (browser !== null) {
             await browser.close();

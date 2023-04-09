@@ -12,7 +12,7 @@ export async function searchBooks(query: string, n: number = 3): Promise<Book[]>
             return {
                 id: book.id,
                 title: book.title,
-                author: book.author,
+                author: book.author ?? '',
                 url: book.url,
             };
         });
@@ -22,7 +22,7 @@ export async function searchBooks(query: string, n: number = 3): Promise<Book[]>
     }
 }
 
-export async function getBookData(goodreads_url: string): Promise<Book> {
+export async function getBookData(goodreads_url: string): Promise<Book | null> {
     try {
         // const bookData = await GoodReadsParser.getBook({ url: goodreads_url });
         const bookData = await scrapeBookFromUrl(goodreads_url);

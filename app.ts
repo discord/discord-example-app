@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import config from "./lib/config.js";
 import express, { Express, Request, Response } from 'express';
 import {
   InteractionType,
@@ -16,9 +16,9 @@ import { BookClubState } from './lib/types/book_club_state.js';
 // Create an express app
 const app: Express = express();
 // Get port, or default to 3000
-const PORT = process.env.PORT || 3000;
+const PORT = config.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
+app.use(express.json({ verify: VerifyDiscordRequest(config.PUBLIC_KEY) }));
 
 // Some in-memory state for the time being
 const bookClubState: BookClubState = {

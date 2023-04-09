@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import config from './config.js';
 import { InstallGlobalCommands } from './utils.js';
 
 // booksearch <query>
@@ -61,4 +61,4 @@ const ALL_COMMANDS = [
   BOOK_SHORTLIST,
 ];
 
-InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
+InstallGlobalCommands(config.APP_ID, ALL_COMMANDS);

@@ -1,3 +1,4 @@
+import config from "../config.js";
 import { InteractionResponseType } from 'discord-interactions';
 import { Request, Response } from 'express';
 import { DiscordRequest } from '../utils.js';
@@ -45,7 +46,7 @@ export async function shortlistCommand(req: Request, res: Response, bookClubStat
             const resultStr = 'The following book was added to the shortlist:\n' +
                 `${book.title} by ${book.author} (${book.url}).`
 
-            const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`;
+            const endpoint = `webhooks/${config.APP_ID}/${req.body.token}/messages/@original`;
 
             try {
                 // Update ephemeral message
