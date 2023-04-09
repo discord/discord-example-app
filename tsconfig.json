@@ -10,22 +10,3 @@
     // "forceConsistentCasingInFileNames": true
   },
 }
-// {
-//   "extends": "@tsconfig/node16/tsconfig.json",
-//   "compilerOptions": {
-//     "outDir": "./dist",
-//     "strict": false,
-//     "esModuleInterop": true,
-//     "skipLibCheck": true,
-//     "forceConsistentCasingInFileNames": true,
-//     "module": "Node16",
-//   },
-//   "include": [
-//     "app.ts",
-//     "./lib/**/*"
-//   ],
-//   "exclude": [
-//     "node_modules",
-//     "**/*.spec.ts"
-//   ]
-// }

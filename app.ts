@@ -7,10 +7,8 @@ import {
 
 import { VerifyDiscordRequest } from './lib/utils.js';
 
-import { testCommand } from './lib/commands/test_command.js';
-import { bookSearchCommand } from './lib/commands/booksearch_command.js';
-import { shortlistCommand } from './lib/commands/shortlist_command.js';
-import { BookClubState } from './lib/types/book_club_state.js';
+import { BookClubState } from './lib/types/BookClubState.js';
+import CommandFactory from "./lib/commands/CommandFactory.js";
 
 
 // Create an express app
@@ -50,13 +48,8 @@ app.post('/interactions', async function (req: Request, res: Response) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
 
-    if (name === 'test') {
-      return testCommand(req, res);
-    } else if (name === 'booksearch') {
-      return bookSearchCommand(req, res);
-    } else if (name === 'shortlist') {
-      return shortlistCommand(req, res, bookClubState);
-    }
+    const command = CommandFactory.getCommand(name);
+    return command.execute(req, res, bookClubState);
   }
 });
 

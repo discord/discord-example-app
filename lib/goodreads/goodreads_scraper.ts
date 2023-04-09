@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
-import { Book } from '../types/book.js';
+import { Book } from '../types/Book.js';
 
 export async function scrapeBookFromUrl(url: string): Promise<Book | null> {
     let browser = null;

@@ -1,5 +1,5 @@
 import { searchBooks as queryGoodreads } from 'goodreads-parser';
-import { Book } from '../types/book.js';
+import { Book } from '../types/Book.js';
 import { scrapeBookFromUrl } from './goodreads_scraper.js';
 
 export async function searchBooks(query: string, n: number = 3): Promise<Book[]> {
