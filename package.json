@@ -15,11 +15,13 @@
   "author": "Shay DeWael",
   "license": "MIT",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "discord-interactions": "^3.2.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "goodreads-parser": "^1.2.6",
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^3.3.0",
+    "puppeteer": "^19.8.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

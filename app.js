@@ -29,9 +29,9 @@ const bookClubState = {
  */
 app.post('/interactions', async function (req, res) {
   // Interaction type and data
-  const { type, id, data } = req.body;
+  const { type, id, data, token } = req.body;
 
-  console.log(type, id, data);
+  console.log(type, id, data, token);
 
   /**
    * Handle verification requests
@@ -103,6 +103,14 @@ app.post('/interactions', async function (req, res) {
         });
       } else if (subCommand === 'add') {
         const url = data.options[0].options[0].value;
+        
+        await res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: 'Request to add the book to the shortlist received! Let me find some more data..'
+            }
+        })
+
         const book = await getBookData(url);
 
         if (book !== null) {
@@ -112,13 +120,23 @@ app.post('/interactions', async function (req, res) {
             url: book.url,
           });
 
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: 'The following book was added to the shortlist:\n' + 
+          const resultStr = 'The following book was added to the shortlist:\n' + 
                 `${book.title} by ${book.author} (${book.url}).`
-            }
-          });
+
+          const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`;
+
+          try {
+            // Update ephemeral message
+            await DiscordRequest(endpoint, {
+              method: 'PATCH',
+              body: {
+                content: resultStr,
+                components: [],
+              },
+            });
+          } catch (err) {
+            console.error('Error sending message:', err);
+          }
         } else {
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
