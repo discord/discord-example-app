@@ -1,4 +1,4 @@
-import { Book } from "./book.js";
+import { Book } from "./Book.js";
 
 export type BookClubState = {
     shortlist: {

@@ -1,10 +1,10 @@
 import { InteractionResponseType } from 'discord-interactions';
 import { Request, Response } from 'express';
-import { BookClubState } from '../types/book_club_state.js';
+import { BookClubState } from '../types/BookClubState.js';
 import { getRandomEmoji } from '../utils.js';
-import { ICommand } from './command_factory.js';
+import { ICommand } from './CommandFactory.js';
 
-export class TestCommand implements ICommand {
+export default class TestCommand implements ICommand {
   async execute(req: Request, res: Response, state: BookClubState): Promise<Response> {
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

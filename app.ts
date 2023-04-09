@@ -7,8 +7,8 @@ import {
 
 import { VerifyDiscordRequest } from './lib/utils.js';
 
-import { BookClubState } from './lib/types/book_club_state.js';
-import { CommandFactory } from "./lib/commands/command_factory.js";
+import { BookClubState } from './lib/types/BookClubState.js';
+import CommandFactory from "./lib/commands/CommandFactory.js";
 
 
 // Create an express app

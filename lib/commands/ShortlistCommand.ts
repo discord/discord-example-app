@@ -3,10 +3,10 @@ import { InteractionResponseType } from 'discord-interactions';
 import { Request, Response } from 'express';
 import { DiscordRequest } from '../utils.js';
 import { getBookData } from '../goodreads/goodreads_search.js';
-import { BookClubState } from '../types/book_club_state.js';
-import { ICommand } from "./command_factory.js";
+import { BookClubState } from '../types/BookClubState.js';
+import { ICommand } from "./CommandFactory.js";
 
-export class ShortlistCommand implements ICommand {
+export default class ShortlistCommand implements ICommand {
     async execute(req: Request, res: Response, state: BookClubState): Promise<Response> {
         const { data } = req.body;
         const subCommand = data.options[0].name;
