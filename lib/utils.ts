@@ -1,11 +1,17 @@
-import 'dotenv/config';
+import config from "./config.js";
 import fetch from 'node-fetch';
 import { verifyKey } from 'discord-interactions';
+import { Request, Response } from 'express';
 
-export function VerifyDiscordRequest(clientKey) {
-  return function (req, res, buf, encoding) {
+export function VerifyDiscordRequest(clientKey: string) {
+  return function (req: Request, res: Response, buf: any, encoding: any) {
     const signature = req.get('X-Signature-Ed25519');
     const timestamp = req.get('X-Signature-Timestamp');
+    
+    if (signature === undefined || timestamp === undefined) {
+      res.status(401).send('Bad request signature');
+      throw new Error('Bad request signature');
+    }
 
     const isValidRequest = verifyKey(buf, signature, timestamp, clientKey);
     if (!isValidRequest) {
@@ -15,7 +21,7 @@ export function VerifyDiscordRequest(clientKey) {
   };
 }
 
-export async function DiscordRequest(endpoint, options) {
+export async function DiscordRequest(endpoint: string, options: any) {
   // append endpoint to root API URL
   const url = 'https://discord.com/api/v10/' + endpoint;
   // Stringify payloads
@@ -23,7 +29,7 @@ export async function DiscordRequest(endpoint, options) {
   // Use node-fetch to make requests
   const res = await fetch(url, {
     headers: {
-      Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+      Authorization: `Bot ${config.DISCORD_TOKEN}`,
       'Content-Type': 'application/json; charset=UTF-8',
       'User-Agent': 'DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)',
     },
@@ -39,7 +45,7 @@ export async function DiscordRequest(endpoint, options) {
   return res;
 }
 
-export async function InstallGlobalCommands(appId, commands) {
+export async function InstallGlobalCommands(appId: string, commands: any) {
   // API endpoint to overwrite global commands
   const endpoint = `applications/${appId}/commands`;
 
@@ -55,8 +61,4 @@ export async function InstallGlobalCommands(appId, commands) {
 export function getRandomEmoji() {
   const emojiList = ['😭','😄','😌','🤓','😎','😤','🤖','😶‍🌫️','🌏','📸','💿','👋','🌊','✨'];
   return emojiList[Math.floor(Math.random() * emojiList.length)];
-}
-
-export function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }

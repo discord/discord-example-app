@@ -2,15 +2,17 @@
   "name": "getting-started",
   "version": "1.0.0",
   "description": "Discord example app",
-  "main": "app.js",
   "type": "module",
+  "main": "app.js",
   "engines": {
     "node": "16.x"
   },
   "scripts": {
-    "start": "node app.js",
-    "register": "node commands.js",
-    "dev": "nodemon app.js"
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node dist/app.js",
+    "register": "node dist/lib/register_commands.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.js\""
   },
   "author": "Shay DeWael",
   "license": "MIT",
@@ -24,6 +26,12 @@
     "puppeteer": "^19.8.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "@tsconfig/node16": "^1.0.3",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.11",
+    "concurrently": "^8.0.1",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   }
 }
