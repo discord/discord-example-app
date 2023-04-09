@@ -1,7 +1,8 @@
 import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
+import { Book } from '../types/book.js';
 
-export async function scrapeBookFromUrl(url) {
+export async function scrapeBookFromUrl(url: string): Promise<Book> {
     let browser = null;
 
     try {
@@ -24,12 +25,12 @@ export async function scrapeBookFromUrl(url) {
             author: $('.ContributorLinksList .ContributorLink span.ContributorLink__name')?.text(),
             description: $('.DetailsLayoutRightParagraph__widthConstrained')?.text(),
             coverSmall: $('.BookCover__image>div>img')?.attr('src'),
-            isbn13: $('[itemprop="isbn"]')?.text(),
-            pages: $('.pagesFormat')?.text().toInt(),
-            rating: $('.RatingStatistics__rating')?.text().toFloat(),
-            ratingCount: $('[data-testid=ratingsCount]')?.text().toFloat(),
-            reviewsCount: $('[data-testid=reviewsCount]')?.text().toFloat(),
-            language: $('[itemprop="inLanguage"]')?.text(),
+            // isbn13: $('[itemprop="isbn"]')?.text(),
+            // pages: $('.pagesFormat')?.text().toInt(),
+            // rating: $('.RatingStatistics__rating')?.text().toFloat(),
+            // ratingCount: $('[data-testid=ratingsCount]')?.text().toFloat(),
+            // reviewsCount: $('[data-testid=reviewsCount]')?.text().toFloat(),
+            // language: $('[itemprop="inLanguage"]')?.text(),
         };
         return result;
     } catch (error) {

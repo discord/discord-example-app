@@ -1,22 +1,21 @@
 import { InteractionResponseType } from 'discord-interactions';
+import { Request, Response } from 'express';
 import { searchBooks } from '../goodreads/goodreads_search.js';
 
-export async function bookSearchCommand(res, data) {
+export async function bookSearchCommand(req: Request, res: Response) {
+    const { data } = req.body;
     try {
         const searchQuery = data.options[0].value;
-        const searchResults = await searchBooks(searchQuery);
-        const books = [];
-        if (searchResults.books) {
-            books.push(...searchResults.books.slice(0, 3).map((book, i) => {
-                return `${i + 1}) ${book.title} by ${book.author} can be found at: ${book.url}`;
-            }));
-        }
-
+        const books = await searchBooks(searchQuery);
+        const summary = books.map((book, i) => {
+            return `${i + 1}) ${book.title} by ${book.author} can be found at: ${book.url}`;
+        });
+        
         return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
                 content: `You searched for "${searchQuery}". The top results I got:\n`
-                    + (books.length > 0 ? books.join('\n') : 'No results!'),
+                    + (summary.length > 0 ? summary.join('\n') : 'No results!'),
             }
         });
     } catch (error) {

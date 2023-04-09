@@ -1,8 +1,11 @@
 import { InteractionResponseType } from 'discord-interactions';
+import { Request, Response } from 'express';
 import { DiscordRequest } from '../utils.js';
 import { getBookData } from '../goodreads/goodreads_search.js';
+import { BookClubState } from '../types/book_club_state.js';
 
-export async function shortlistCommand(res, req, data, bookClubState) {
+export async function shortlistCommand(req: Request, res: Response, bookClubState: BookClubState) {
+    const { data } = req.body;
     const subCommand = data.options[0].name;
     if (subCommand === 'list') {
         const books = bookClubState.shortlist.books.map((book, i) => {
@@ -33,6 +36,7 @@ export async function shortlistCommand(res, req, data, bookClubState) {
 
         if (book !== null) {
             bookClubState.shortlist.books.push({
+                id: book.id,
                 title: book.title,
                 author: book.author,
                 url: book.url,

@@ -1,6 +1,9 @@
 #node
 node_modules
 
+#building
+dist
+
 #secrets
 .env
 

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import express from 'express';
+import express, { Express, Request, Response } from 'express';
 import {
   InteractionType,
   InteractionResponseType,
@@ -10,17 +10,18 @@ import { VerifyDiscordRequest } from './lib/utils.js';
 import { testCommand } from './lib/commands/test_command.js';
 import { bookSearchCommand } from './lib/commands/booksearch_command.js';
 import { shortlistCommand } from './lib/commands/shortlist_command.js';
+import { BookClubState } from './lib/types/book_club_state.js';
 
 
 // Create an express app
-const app = express();
+const app: Express = express();
 // Get port, or default to 3000
 const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 // Some in-memory state for the time being
-const bookClubState = {
+const bookClubState: BookClubState = {
   shortlist: {
     books: [],
   },
@@ -29,7 +30,7 @@ const bookClubState = {
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
  */
-app.post('/interactions', async function (req, res) {
+app.post('/interactions', async function (req: Request, res: Response) {
   // Interaction type and data
   const { type, id, data, token } = req.body;
 
@@ -50,11 +51,11 @@ app.post('/interactions', async function (req, res) {
     const { name } = data;
 
     if (name === 'test') {
-      return testCommand(res);
+      return testCommand(req, res);
     } else if (name === 'booksearch') {
-      return bookSearchCommand(res, data);
+      return bookSearchCommand(req, res);
     } else if (name === 'shortlist') {
-      return shortlistCommand(res, req, data, bookClubState);
+      return shortlistCommand(req, res, bookClubState);
     }
   }
 });
