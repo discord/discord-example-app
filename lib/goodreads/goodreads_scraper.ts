@@ -22,8 +22,12 @@ export async function scrapeBookFromUrl(url: string): Promise<Book | null> {
             id: url.split('show/')[1]?.split('-')[0],
             url: $('[hreflang="en"]')?.attr('href') || url,
             title: $('h1.Text__title1')?.text(),
-            author: $('.ContributorLinksList .ContributorLink span.ContributorLink__name')?.text(),
-            description: $('.DetailsLayoutRightParagraph__widthConstrained')?.text(),
+            author: $(
+                '.ContributorLinksList .ContributorLink span.ContributorLink__name',
+            )?.text(),
+            description: $(
+                '.DetailsLayoutRightParagraph__widthConstrained',
+            )?.text(),
             coverSmall: $('.BookCover__image>div>img')?.attr('src'),
             // isbn13: $('[itemprop="isbn"]')?.text(),
             // pages: $('.pagesFormat')?.text().toInt(),
@@ -42,5 +46,3 @@ export async function scrapeBookFromUrl(url: string): Promise<Book | null> {
         }
     }
 }
-
-

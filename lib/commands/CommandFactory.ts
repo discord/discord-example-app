@@ -1,23 +1,27 @@
-import { Request, Response } from "express";
-import { BookClubState } from "../types/BookClubState.js";
-import BookSearchCommand from "./BookSearchCommand.js";
-import ShortlistCommand from "./ShortlistCommand.js";
-import TestCommand from "./TestCommand.js";
+import { Request, Response } from 'express';
+import { BookClubState } from '../types/BookClubState.js';
+import BookSearchCommand from './BookSearchCommand.js';
+import ShortlistCommand from './ShortlistCommand.js';
+import TestCommand from './TestCommand.js';
 
 export interface ICommand {
-  execute(req: Request, res: Response, state: BookClubState): Promise<Response>;
+    execute(
+        req: Request,
+        res: Response,
+        state: BookClubState,
+    ): Promise<Response>;
 }
 
 export default abstract class CommandFactory {
-  static getCommand(command: string): ICommand {
-    if (command === 'test') {
-      return new TestCommand();
-    } else if (command === 'booksearch') {
-      return new BookSearchCommand();
-    } else if (command === 'shortlist') {
-      return new ShortlistCommand();
-    } else {
-      throw new Error(`Command ${command} not defined.`);
+    static getCommand(command: string): ICommand {
+        if (command === 'test') {
+            return new TestCommand();
+        } else if (command === 'booksearch') {
+            return new BookSearchCommand();
+        } else if (command === 'shortlist') {
+            return new ShortlistCommand();
+        } else {
+            throw new Error(`Command ${command} not defined.`);
+        }
     }
-  }
 }
