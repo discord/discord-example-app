@@ -10,7 +10,9 @@
     "scripts": {
         "build": "tsc",
         "lint": "eslint --ext .js,.ts .",
-        "format": "prettier --config .prettierrc --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+        "lint:fix": "eslint --ext .js,.ts . -- --fix",
+        "format": "prettier --config .prettierrc --ignore-path .gitignore --check \"**/*.+(js|ts|json)\"",
+        "format:fix": "prettier --config .prettierrc --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
         "prestart": "npm run build",
         "start": "node dist/app.js",
         "register": "node dist/lib/register_commands.js",
