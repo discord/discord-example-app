@@ -2,12 +2,12 @@ import { searchBooks as queryGoodreads } from 'goodreads-parser';
 import { Book } from '../types/Book.js';
 import { scrapeBookFromUrl } from './goodreads_scraper.js';
 
-export async function searchBooks(query: string, n: number = 3): Promise<Book[]> {
+export async function searchBooks(query: string, n = 3): Promise<Book[]> {
     try {
         const searchResults = await queryGoodreads({ q: query, page: 0 });
         console.log('Search query', query);
         console.log('Results', searchResults);
-        
+
         return searchResults.books.slice(0, n).map((book) => {
             return {
                 id: book.id,
@@ -17,7 +17,7 @@ export async function searchBooks(query: string, n: number = 3): Promise<Book[]>
             };
         });
     } catch (error) {
-        console.error("error", error);
+        console.error('error', error);
         return [];
     }
 }
@@ -30,7 +30,7 @@ export async function getBookData(goodreads_url: string): Promise<Book | null> {
         console.log('Book data', bookData);
         return bookData;
     } catch (error) {
-        console.error("error", error);
+        console.error('error', error);
         return null;
     }
 }
