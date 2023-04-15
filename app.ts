@@ -47,6 +47,8 @@ app.post('/interactions', async function (req: Request, res: Response) {
         const command = CommandFactory.getCommand(name);
         return command.execute(req, res, bookClubState);
     }
+
+    console.warn('Unhandled request');
 });
 
 app.listen(PORT, () => {
