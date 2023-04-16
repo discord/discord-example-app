@@ -57,6 +57,14 @@ const BOOK_SHORTLIST = {
     ],
 };
 
-const ALL_COMMANDS = [BOOK_SEARCH, BOOK_SHORTLIST];
+// startvote
+const VOTE = {
+    name: 'startvote',
+    description:
+        'Start a vote for the next book with the books on your shortlist',
+    options: [],
+};
+
+const ALL_COMMANDS = [BOOK_SEARCH, BOOK_SHORTLIST, VOTE];
 
 InstallGlobalCommands(config.APP_ID, ALL_COMMANDS);
