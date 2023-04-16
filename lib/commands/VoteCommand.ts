@@ -21,6 +21,12 @@ export default class VoteCommand implements ICommand {
                 });
             }
 
+            // Copy over shortlist to vote state
+            state.vote = {
+                books: [...state.shortlist.books],
+                votes: [],
+            };
+
             const data = {
                 content: 'Ok folks, cast your vote! The nominees are:\n',
                 components: [
@@ -38,8 +44,9 @@ export default class VoteCommand implements ICommand {
                                     }),
                                 ),
                                 placeholder: 'Pick your votes',
-                                max_value: Math.min(
-                                    state.shortlist.books.length,
+                                min_values: 1,
+                                max_values: Math.min(
+                                    state.vote.books.length,
                                     25,
                                 ),
                             },

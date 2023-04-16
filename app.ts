@@ -6,6 +6,7 @@ import { VerifyDiscordRequest } from './lib/utils.js';
 
 import { BookClubState } from './lib/types/BookClubState.js';
 import CommandFactory from './lib/commands/CommandFactory.js';
+import MessageActionFactory from './lib/message_actions/MessageActionFactory.js';
 
 // Create an express app
 const app: Express = express();
@@ -19,6 +20,10 @@ const bookClubState: BookClubState = {
     shortlist: {
         books: [],
     },
+    vote: {
+        books: [],
+        votes: [],
+    },
 };
 
 /**
@@ -26,9 +31,7 @@ const bookClubState: BookClubState = {
  */
 app.post('/interactions', async function (req: Request, res: Response) {
     // Interaction type and data
-    const { type, id, data, token } = req.body;
-
-    console.log(type, id, data, token);
+    const { type, data } = req.body;
 
     /**
      * Handle verification requests
@@ -46,6 +49,14 @@ app.post('/interactions', async function (req: Request, res: Response) {
 
         const command = CommandFactory.getCommand(name);
         return command.execute(req, res, bookClubState);
+    }
+
+    if (type === InteractionType.MESSAGE_COMPONENT) {
+        // This is used for responses through our message UI components
+
+        const { custom_id } = data;
+        const action = MessageActionFactory.getAction(custom_id);
+        return action.execute(req, res, bookClubState);
     }
 
     console.warn('Unhandled request');
