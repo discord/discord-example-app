@@ -8,9 +8,15 @@ export type BookClubState = {
         books: Book[];
         votes: VoteEntry[];
     };
+    events: Event[];
 };
 
 export type VoteEntry = {
     book: Book;
     user: string;
+};
+
+export type Event = {
+    date: Date;
+    book: Book;
 };

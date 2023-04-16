@@ -4,6 +4,7 @@ import BookSearchCommand from './BookSearchCommand.js';
 import ShortlistCommand from './ShortlistCommand.js';
 import TestCommand from './TestCommand.js';
 import VoteCommand from './VoteCommand.js';
+import BookEventCommand from './BookEventCommand.js';
 
 export interface ICommand {
     execute(
@@ -23,6 +24,8 @@ export default abstract class CommandFactory {
             return new ShortlistCommand();
         } else if (command === 'startvote') {
             return new VoteCommand();
+        } else if (command === 'bookevent') {
+            return new BookEventCommand();
         } else {
             throw new Error(`Command ${command} not defined.`);
         }

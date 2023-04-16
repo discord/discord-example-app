@@ -24,6 +24,7 @@ const bookClubState: BookClubState = {
         books: [],
         votes: [],
     },
+    events: [],
 };
 
 /**
