@@ -61,7 +61,7 @@ app.post('/interactions', function (req, res) {
   /**
    * Handle modal submissions
    */
-  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
+  if (type === InteractionType.MODAL_SUBMIT) {
     // custom_id of modal
     const modalId = data.custom_id;
     // user ID of member who filled out modal
