@@ -35,7 +35,7 @@ app.post('/interactions', async function (req, res) {
     const { name } = data;
 
     // "call saul" command
-    if (name === 'call saul') {
+    if (name === 'callsaul') {
       const quote = await getQuote();
       // Send a message into the channel where command was triggered from
       return res.send({
