@@ -77,7 +77,7 @@ If you aren't following the [getting started guide](https://discord.com/develope
 
 ### Set up interactivity
 
-The project needs a public endpoint where Discord can send requests. To develop and saul locally, you can use something like [`ngrok`](https://ngrok.com/) to tunnel HTTP traffic.
+The project needs a public endpoint where Discord can send requests. To develop and test locally, you can use something like [`ngrok`](https://ngrok.com/) to tunnel HTTP traffic.
 
 Install ngrok if you haven't already, then start listening on port `3000`:
 
