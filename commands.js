@@ -17,29 +17,13 @@ function createCommandChoices() {
   return commandChoices;
 }
 
-// Simple test command
-const TEST_COMMAND = {
-  name: 'test',
-  description: 'Basic command',
+// callsaul command
+const SAUL_COMMAND = {
+  name: 'callsaul',
+  description: 'Talk to Saul',
   type: 1,
 };
 
-// Command containing options
-const CHALLENGE_COMMAND = {
-  name: 'challenge',
-  description: 'Challenge to a match of rock paper scissors',
-  options: [
-    {
-      type: 3,
-      name: 'object',
-      description: 'Pick your object',
-      required: true,
-      choices: createCommandChoices(),
-    },
-  ],
-  type: 1,
-};
-
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
+const ALL_COMMANDS = [SAUL_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

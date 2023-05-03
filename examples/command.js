@@ -14,8 +14,8 @@ app.post('/interactions', function (req, res) {
    * Handle slash command requests
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    // Slash command with name of "test"
-    if (data.name === 'test') {
+    // Slash command with name of "callsaul"
+    if (data.name === 'callsaul') {
       // Send a message as response
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -40,7 +40,7 @@ async function createCommand() {
    */
   // const guildEndpoint = `applications/${appId}/guilds/<your guild id>/commands`;
   const commandBody = {
-    name: 'test',
+    name: 'callsaul',
     description: 'Just your average command',
     // chat command (see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types)
     type: 1,

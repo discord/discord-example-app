@@ -18,8 +18,8 @@ app.post('/interactions', function (req, res) {
    * Handle slash command requests
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    // Slash command with name of "test"
-    if (data.name === 'test') {
+    // Slash command with name of "callsaul"
+    if (data.name === 'callsaul') {
       // Send a modal as response
       return res.send({
         type: InteractionResponseType.APPLICATION_MODAL,
