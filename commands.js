@@ -17,7 +17,7 @@ function createCommandChoices() {
   return commandChoices;
 }
 
-// callsaul command
+// call saul command
 const SAUL_COMMAND = {
   name: 'callsaul',
   description: 'Talk to Saul',
