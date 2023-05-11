@@ -4,9 +4,7 @@
   "description": "Discord example app",
   "main": "app.js",
   "type": "module",
-  "engines": {
-    "node": "16.x"
-  },
+  "engines": {},
   "scripts": {
     "start": "node app.js",
     "register": "node commands.js",
@@ -18,6 +16,7 @@
     "discord-interactions": "^3.2.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "ngrok": "^5.0.0-beta.2",
     "node-fetch": "^3.3.0"
   },
   "devDependencies": {
