@@ -105,7 +105,6 @@ app.post('/interactions', async function (req, res) {
         await res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            // Fetches a random emoji to send from a helper function
             content: 'What is your object of choice?',
             // Indicates it'll be an ephemeral message
             flags: InteractionResponseFlags.EPHEMERAL,
