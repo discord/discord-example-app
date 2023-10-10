@@ -48,10 +48,11 @@ app.post('/interactions', async function (req, res) {
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           // Fetches a random emoji to send from a helper function
-          content: 'hello world ' + getRandomEmoji(),
+          content: 'RAT WARS' + getRandomEmoji(),
         },
       });
     }
+    
   }
 });
 

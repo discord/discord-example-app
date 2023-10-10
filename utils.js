@@ -53,7 +53,7 @@ export async function InstallGlobalCommands(appId, commands) {
 
 // Simple method that returns a random emoji from list
 export function getRandomEmoji() {
-  const emojiList = ['😭','😄','😌','🤓','😎','😤','🤖','😶‍🌫️','🌏','📸','💿','👋','🌊','✨'];
+  const emojiList = ['🐀','🐀','🐀','🐀','🐀','🐀','🐀','😶‍🐀','🐀','🐀','🐀','🐀','🐀','🐀'];
   return emojiList[Math.floor(Math.random() * emojiList.length)];
 }
 
