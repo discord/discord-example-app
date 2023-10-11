@@ -59,7 +59,7 @@ app.post('/interactions', function (req, res) {
       console.log(req.body);
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: { content: `<@${userId} clicked the button` },
+        data: { content: `<@${userId}> clicked the button` },
       });
     }
   }
