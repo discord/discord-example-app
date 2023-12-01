@@ -1,60 +1,44 @@
-import 'dotenv/config';
-import express from 'express';
-import {
-  InteractionType,
-  InteractionResponseType,
-  InteractionResponseFlags,
-  MessageComponentTypes,
-  ButtonStyleTypes,
-} from 'discord-interactions';
-import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest } from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
+// Require the necessary discord.js classes
+const { Client, GatewayIntentBits, Events } = require('discord.js');
+const { token } = require('./config.json');
 
-// Create an express app
-const app = express();
-// Get port, or default to 3000
-const PORT = process.env.PORT || 3000;
-// Parse request body and verifies incoming requests using discord-interactions package
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
+// Create a new client instance
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ]
+});
 
-// Store for in-progress games. In production, you'd want to use a DB
-const activeGames = {};
+client.on(Events.MessageCreate, message => {
+    const messageStr = String(message)
+    const hellYeahChannel = message.guild.channels.cache.find(channel => {
+        return channel.name === 'hell-yeah'
+    })
+    switch (true) {
+        case messageStr.includes("hell yeah") || messageStr.includes("evil dead"):
+            // Short circuit if in hell yeah channel
+            if (message.channel?.name === 'hell-yeah') {
+                return;
+            }
 
-/**
- * Interactions endpoint URL where Discord will send HTTP requests
- */
-app.post('/interactions', async function (req, res) {
-  // Interaction type and data
-  const { type, id, data } = req.body;
+            message?.react('🤘');
 
-  /**
-   * Handle verification requests
-   */
-  if (type === InteractionType.PING) {
-    return res.send({ type: InteractionResponseType.PONG });
-  }
-
-  /**
-   * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
-   */
-  if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name } = data;
-
-    // "test" command
-    if (name === 'test') {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: 'hello world ' + getRandomEmoji(),
-        },
-      });
+            if (!hellYeahChannel) {
+                return
+            }
+            hellYeahChannel?.send('Hell Yeah!')
+            break
+        case messageStr.includes("banana bread"):
+            hellYeahChannel?.send("https://www.youtube.com/embed/9GQyDuz4Fqc?si=l_X4Hcw_1heqyNdT")
+            break
+        default:
+            return
     }
-  }
+
 });
 
-app.listen(PORT, () => {
-  console.log('Listening on port', PORT);
-});
+
+// Log in to Discord with your client's token
+client.login(token);
