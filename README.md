@@ -45,7 +45,12 @@ git clone https://github.com/discord/discord-example-app.git
 Then navigate to its directory and install dependencies:
 ```
 cd discord-example-app
+
+# npm
 npm install
+
+# yarn
+yarn install
 ```
 ### Get app credentials
 
@@ -60,7 +65,11 @@ Fetching credentials is covered in detail in the [getting started guide](https:/
 The commands for the example app are set up in `commands.js`. All of the commands in the `ALL_COMMANDS` array at the bottom of `commands.js` will be installed when you run the `register` command configured in `package.json`:
 
 ```
+# npm
 npm run register
+
+# yarn
+yarn register
 ```
 
 ### Run the app
