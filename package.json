@@ -8,7 +8,6 @@
     "node": "18.x"
   },
   "scripts": {
-    "register": "node commands.js",
     "start": "node ./src/server.js",
     "dev": "wrangler dev ./src/server.js",
     "ngrok": "ngrok http 8787",
@@ -24,13 +23,13 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240208.0",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.0.3",
+    "node-fetch": "^3.3.2",
     "nodemon": "^2.0.15",
     "prettier": "^3.2.5",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "typescript": "^5.3.3",
-    "wrangler": "^3.28.3",
-    "dotenv": "^16.0.3",
-    "discord.js": "^14.14.1",
-    "node-fetch": "^3.3.2"
+    "wrangler": "^3.28.3"
   }
 }

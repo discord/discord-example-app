@@ -15,6 +15,7 @@ router.post('/', async (request, env) => {
     request,
     env
   )
+
   if (!isValid || !interaction) {
     return new Response('Bad request signature.', { status: 401 })
   }
@@ -28,7 +29,7 @@ router.post('/', async (request, env) => {
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     switch (interaction.data.name.toLowerCase()) {
       case COMMANDS.RANDOM_GAME: {
-        return randomGame(interaction)
+        return randomGame(interaction, env)
       }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 })

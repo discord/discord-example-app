@@ -6,3 +6,4 @@ compatibility_flags = [ "nodejs_compat" ]
 [vars]
 DISCORD_PUBLIC_KEY = ""
 DISCORD_APPLICATION_ID = ""
+DISCORD_TOKEN = ""
