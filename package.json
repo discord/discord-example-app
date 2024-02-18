@@ -13,7 +13,8 @@
     "dev": "wrangler dev ./src/server.js",
     "ngrok": "ngrok http 8787",
     "validate": "npm run prettier --check",
-    "fix": "prettier . --write"
+    "fix": "prettier . --write",
+    "publish": "wrangler deploy"
   },
   "author": "Damir Akzhigitov",
   "license": "MIT",
