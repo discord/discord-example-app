@@ -32,10 +32,10 @@ async function registerCommands(url) {
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bot ${token}`,
+      Authorization: `Bot ${token}`
     },
     method: 'PUT',
-    body: JSON.stringify([AWW_COMMAND, INVITE_COMMAND]),
+    body: JSON.stringify([AWW_COMMAND, INVITE_COMMAND])
   })
 
   if (response.ok) {

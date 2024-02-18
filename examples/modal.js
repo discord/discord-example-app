@@ -1,19 +1,19 @@
-import 'dotenv/config';
-import express from 'express';
+import 'dotenv/config'
+import express from 'express'
 import {
   InteractionType,
   InteractionResponseType,
-  MessageComponentTypes,
-} from 'discord-interactions';
-import { VerifyDiscordRequest } from '../utils.js';
+  MessageComponentTypes
+} from 'discord-interactions'
+import { VerifyDiscordRequest } from '../utils.js'
 
 // Create and configure express app
-const app = express();
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
+const app = express()
+app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }))
 
 app.post('/interactions', function (req, res) {
   // Interaction type and data
-  const { type, data } = req.body;
+  const { type, data } = req.body
   /**
    * Handle slash command requests
    */
@@ -36,9 +36,9 @@ app.post('/interactions', function (req, res) {
                   type: MessageComponentTypes.INPUT_TEXT,
                   custom_id: 'my_text',
                   style: 1,
-                  label: 'Type some text',
-                },
-              ],
+                  label: 'Type some text'
+                }
+              ]
             },
             {
               type: MessageComponentTypes.ACTION_ROW,
@@ -48,13 +48,13 @@ app.post('/interactions', function (req, res) {
                   custom_id: 'my_longer_text',
                   // Bigger text box for input
                   style: 2,
-                  label: 'Type some (longer) text',
-                },
-              ],
-            },
-          ],
-        },
-      });
+                  label: 'Type some (longer) text'
+                }
+              ]
+            }
+          ]
+        }
+      })
     }
   }
 
@@ -63,28 +63,28 @@ app.post('/interactions', function (req, res) {
    */
   if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
     // custom_id of modal
-    const modalId = data.custom_id;
+    const modalId = data.custom_id
     // user ID of member who filled out modal
-    const userId = req.body.member.user.id;
+    const userId = req.body.member.user.id
 
     if (modalId === 'my_modal') {
-      let modalValues = '';
+      let modalValues = ''
       // Get value of text inputs
       for (let action of data.components) {
-        let inputComponent = action.components[0];
-        modalValues += `${inputComponent.custom_id}: ${inputComponent.value}\n`;
+        let inputComponent = action.components[0]
+        modalValues += `${inputComponent.custom_id}: ${inputComponent.value}\n`
       }
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `<@${userId}> typed the following (in a modal):\n\n${modalValues}`,
-        },
-      });
+          content: `<@${userId}> typed the following (in a modal):\n\n${modalValues}`
+        }
+      })
     }
   }
-});
+})
 
 app.listen(3000, () => {
-  console.log('Listening on port 3000');
-});
+  console.log('Listening on port 3000')
+})

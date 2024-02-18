@@ -1,4 +1,4 @@
 export const COMMANDS = {
   LOX: 'lox',
-  SETUP_MOD: 'setup-mod',
+  SETUP_MOD: 'setup-mod'
 }

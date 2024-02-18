@@ -10,7 +10,7 @@ function createCommandChoices() {
   for (let choice of choices) {
     commandChoices.push({
       name: capitalize(choice),
-      value: choice.toLowerCase(),
+      value: choice.toLowerCase()
     })
   }
 
@@ -21,13 +21,13 @@ function createCommandChoices() {
 const TEST_COMMAND = {
   name: 'lox',
   description: 'lox command',
-  type: 1,
+  type: 1
 }
 
 const REGISTER_MODERATOR = {
   name: 'setup-mod',
   description: 'setup moderator',
-  type: 1,
+  type: 1
 }
 
 // Command containing options
@@ -40,10 +40,10 @@ const CHALLENGE_COMMAND = {
       name: 'object',
       description: 'Pick your object',
       required: true,
-      choices: createCommandChoices(),
-    },
+      choices: createCommandChoices()
+    }
   ],
-  type: 1,
+  type: 1
 }
 
 const ALL_COMMANDS = [TEST_COMMAND, REGISTER_MODERATOR]

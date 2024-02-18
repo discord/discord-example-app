@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { Client, GatewayIntentBits, Events } from 'discord.js'
 import { COMMANDS } from './constants.js'
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 })
 
 client.on(Events.ClientReady, () => {
