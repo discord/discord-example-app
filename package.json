@@ -1,5 +1,5 @@
 {
-  "name": "BoomModBot",
+  "name": "boommodbot",
   "version": "1.0.0",
   "description": "Discord bot app",
   "main": "app.js",
@@ -30,6 +30,7 @@
     "typescript": "^5.3.3",
     "wrangler": "^3.28.3",
     "dotenv": "^16.0.3",
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.14.1",
+    "node-fetch": "^3.3.2"
   }
 }

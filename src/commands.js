@@ -1,9 +1,8 @@
-export const AWW_COMMAND = {
-  name: 'lox',
-  description: 'Drop some cuteness on this channel.'
-}
+import { COMMANDS } from './constants.js'
 
-export const INVITE_COMMAND = {
-  name: 'invite',
-  description: 'Get an invite link to add the bot to your server'
-}
+export default [
+  {
+    name: COMMANDS.RANDOM_GAME,
+    description: 'Введя эту команду бот вернет случайную игру'
+  }
+]
