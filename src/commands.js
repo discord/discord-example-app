@@ -1,5 +1,5 @@
 export const AWW_COMMAND = {
-  name: 'awwww',
+  name: 'lox',
   description: 'Drop some cuteness on this channel.'
 }
 

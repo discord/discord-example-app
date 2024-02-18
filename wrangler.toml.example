@@ -1,0 +1,8 @@
+name = "worker-late-cell-bc78"
+main = "./src/server.js"
+compatibility_date = "2023-05-18"
+compatibility_flags = [ "nodejs_compat" ]
+
+[vars]
+DISCORD_PUBLIC_KEY = ""
+DISCORD_APPLICATION_ID = ""
