@@ -3,3 +3,4 @@ node_modules
 wrangler.toml
 .wrangler
 /config.json
+/nodeBot/config.json

@@ -6,7 +6,6 @@ module.exports = {
     .setName('join')
     .setDescription('Join to voice channel!'),
   async execute(interaction) {
-    console.log('interaction: ', interaction)
     const connection = joinVoiceChannel({
       channelId: interaction.channelId,
       guildId: interaction.guildId,

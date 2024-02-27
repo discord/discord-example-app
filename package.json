@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/voice": "^0.16.1",
+    "@google-cloud/text-to-speech": "^5.1.0",
     "discord-interactions": "^3.2.0",
     "discord.js": "^14.14.1",
     "ffmpeg-static": "^5.2.0",

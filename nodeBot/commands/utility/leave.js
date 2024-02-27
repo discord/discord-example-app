@@ -8,7 +8,7 @@ module.exports = {
   async execute(interaction) {
     const connection = getVoiceConnection(interaction.guildId)
 
-    connection.destroy()
+    if (connection) connection.destroy()
 
     await interaction.reply('Pong!')
   }
