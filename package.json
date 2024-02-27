@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Discord bot app",
   "main": "app.js",
+  "type": "module",
   "engines": {
     "node": "18.x"
   },

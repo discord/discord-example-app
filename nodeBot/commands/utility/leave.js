@@ -1,7 +1,7 @@
-const { SlashCommandBuilder } = require('discord.js')
-const { getVoiceConnection } = require('@discordjs/voice')
+import { SlashCommandBuilder } from 'discord.js'
+import { getVoiceConnection } from '@discordjs/voice'
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('leave')
     .setDescription('Leave voice channel!'),

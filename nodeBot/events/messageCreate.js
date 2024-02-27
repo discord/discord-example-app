@@ -1,4 +1,4 @@
-const { Events, MessageMentions } = require('discord.js')
+import { Events, MessageMentions } from 'discord.js'
 
 function getUserFromMention(mention) {
   const matches = mention
@@ -10,7 +10,7 @@ function getUserFromMention(mention) {
   return matches[1]
 }
 
-module.exports = {
+export default {
   name: Events.MessageCreate,
   execute(message) {
     const id = getUserFromMention(message.content)

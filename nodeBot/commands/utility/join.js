@@ -1,7 +1,7 @@
-const { SlashCommandBuilder } = require('discord.js')
-const { joinVoiceChannel } = require('@discordjs/voice')
+import { SlashCommandBuilder } from 'discord.js'
+import { joinVoiceChannel } from '@discordjs/voice'
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('join')
     .setDescription('Join to voice channel!'),

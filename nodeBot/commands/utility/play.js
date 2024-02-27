@@ -1,14 +1,14 @@
-const { SlashCommandBuilder } = require('discord.js')
-const { join } = require('node:path')
-const {
+import { SlashCommandBuilder } from 'discord.js'
+import { join } from 'node:path'
+import {
   createAudioResource,
   createAudioPlayer,
   getVoiceConnection,
   AudioPlayerStatus,
   VoiceConnectionStatus
-} = require('@discordjs/voice')
+} from '@discordjs/voice'
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder().setName('play').setDescription('Play music'),
   async execute(interaction) {
     const connection = getVoiceConnection(interaction.guildId)
