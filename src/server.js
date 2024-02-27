@@ -3,6 +3,8 @@ import { InteractionResponseType, InteractionType } from 'discord-interactions'
 import { JsonResponse, verifyDiscordRequest } from './utils/index.js'
 import { COMMANDS } from './constants.js'
 import { randomGame } from './actions/randomGame.js'
+import { randomAnekdot } from './actions/randomAnekdot.js'
+import { joinVoiceChannel } from '@discordjs/voice'
 
 const router = Router()
 
@@ -15,6 +17,7 @@ router.post('/', async (request, env) => {
     request,
     env
   )
+  console.log('interaction: ', interaction)
 
   if (!isValid || !interaction) {
     return new Response('Bad request signature.', { status: 401 })
@@ -30,6 +33,9 @@ router.post('/', async (request, env) => {
     switch (interaction.data.name.toLowerCase()) {
       case COMMANDS.RANDOM_GAME: {
         return randomGame(interaction, env)
+      }
+      case COMMANDS.ANEKDOT: {
+        return randomAnekdot(interaction, env)
       }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 })

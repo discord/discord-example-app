@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Discord bot app",
   "main": "app.js",
-  "type": "module",
   "engines": {
     "node": "18.x"
   },
   "scripts": {
+    "start-dis": "node ./nodeBot/index.js",
     "start": "node ./src/server.js",
     "dev": "wrangler dev ./src/server.js",
     "ngrok": "ngrok http 8787",
@@ -18,12 +18,17 @@
   "author": "Damir Akzhigitov",
   "license": "MIT",
   "dependencies": {
+    "@discordjs/voice": "^0.16.1",
     "discord-interactions": "^3.2.0",
-    "itty-router": "^4.0.27"
+    "discord.js": "^14.14.1",
+    "ffmpeg-static": "^5.2.0",
+    "itty-router": "^4.0.27",
+    "jsdom": "^24.0.0",
+    "libsodium-wrappers": "^0.7.13",
+    "prism-media": "^1.3.5"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240208.0",
-    "discord.js": "^14.14.1",
     "dotenv": "^16.0.3",
     "node-fetch": "^3.3.2",
     "nodemon": "^2.0.15",
