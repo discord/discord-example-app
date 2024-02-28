@@ -1,5 +1,7 @@
 import { Events, MessageMentions } from 'discord.js'
-
+import { generate } from '../utils/createAudio.js'
+import Play from '../commands/utility/play.js'
+import chatApi from '../utils/chatApi.js'
 function getUserFromMention(mention) {
   const matches = mention
     .matchAll(MessageMentions.GlobalUsersPattern)
@@ -12,11 +14,19 @@ function getUserFromMention(mention) {
 
 export default {
   name: Events.MessageCreate,
-  execute(message) {
+  async execute(message) {
     const id = getUserFromMention(message.content)
 
     if (id === '1208462220296720475') {
-      console.log('message to bot, message: ', message.content)
+      const msg = message.content.slice(22).trim()
+
+      const answer = await chatApi(msg)
+
+      await generate(answer)
+
+      setTimeout(async () => {
+        await Play.execute(message)
+      }, 500)
     }
   }
 }

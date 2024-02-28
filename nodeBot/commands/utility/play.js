@@ -7,12 +7,16 @@ import {
   AudioPlayerStatus,
   VoiceConnectionStatus
 } from '@discordjs/voice'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default {
   data: new SlashCommandBuilder().setName('play').setDescription('Play music'),
   async execute(interaction) {
     const connection = getVoiceConnection(interaction.guildId)
-    const resource = createAudioResource(join(__dirname, 'test3.mp3'))
+    const resource = createAudioResource(join(__dirname, 'output.mp3'))
     // resource.volume.setVolume(0.1)
     const player = createAudioPlayer()
 
@@ -29,11 +33,11 @@ export default {
 
       if (subscription) {
         // Unsubscribe after 5 seconds (stop playing audio on the voice connection)
-        setTimeout(() => {
-          subscription.unsubscribe()
-          connection.destroy()
-          interaction.channel.send('Disconnected from voice channel.')
-        }, 25000)
+        // setTimeout(() => {
+        //   subscription.unsubscribe()
+        //   if (connection) connection.destroy()
+        //   interaction.channel.send('Disconnected from voice channel.')
+        // }, 25000)
       }
 
       player.on(AudioPlayerStatus.Playing, () => {

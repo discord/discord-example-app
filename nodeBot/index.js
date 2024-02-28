@@ -12,6 +12,9 @@ import Play from './commands/utility/play.js'
 import Server from './commands/utility/server.js'
 import User from './commands/utility/user.js'
 
+const commands = [Join, Leave, Play, Ping, Server, User]
+const events = [MessageCreate, InteractionCreate, Ready]
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -23,7 +26,7 @@ const client = new Client({
 })
 
 client.commands = new Collection()
-const commands = [Join, Leave, Play, Ping, Server, User]
+
 commands.forEach((command) => {
   if ('data' in command && 'execute' in command) {
     client.commands.set(command.data.name, command)
@@ -34,7 +37,6 @@ commands.forEach((command) => {
   }
 })
 
-const events = [MessageCreate, InteractionCreate, Ready]
 events.forEach((event) => {
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args))
