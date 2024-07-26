@@ -1,13 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
-import { InteractionType, InteractionResponseType } from 'discord-interactions';
-import { VerifyDiscordRequest, DiscordRequest } from '../utils.js';
+import { InteractionType, InteractionResponseType, verifyKeyMiddleware } from 'discord-interactions';
+import { DiscordRequest } from '../utils.js';
 
 // Create and configure express app
 const app = express();
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-app.post('/interactions', function (req, res) {
+app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function (req, res) {
   // Interaction type and data
   const { type, data } = req.body;
   /**
