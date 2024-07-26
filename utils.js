@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import fetch from 'node-fetch';
 import { verifyKey } from 'discord-interactions';
 
 export function VerifyDiscordRequest(clientKey) {
@@ -20,7 +19,7 @@ export async function DiscordRequest(endpoint, options) {
   const url = 'https://discord.com/api/v10/' + endpoint;
   // Stringify payloads
   if (options.body) options.body = JSON.stringify(options.body);
-  // Use node-fetch to make requests
+  // Use fetch to make requests
   const res = await fetch(url, {
     headers: {
       Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
