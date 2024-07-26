@@ -21,7 +21,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
     if (data.name === 'test') {
       // Send a modal as response
       return res.send({
-        type: InteractionResponseType.APPLICATION_MODAL,
+        type: InteractionResponseType.MODAL,
         data: {
           custom_id: 'my_modal',
           title: 'Modal title',
@@ -60,7 +60,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
   /**
    * Handle modal submissions
    */
-  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
+  if (type === InteractionType.MODAL_SUBMIT) {
     // custom_id of modal
     const modalId = data.custom_id;
     // user ID of member who filled out modal
