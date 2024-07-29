@@ -22,6 +22,8 @@ const TEST_COMMAND = {
   name: 'test',
   description: 'Basic command',
   type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
 };
 
 // Command containing options
@@ -38,6 +40,8 @@ const CHALLENGE_COMMAND = {
     },
   ],
   type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 2],
 };
 
 const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];

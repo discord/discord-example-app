@@ -55,7 +55,10 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
     // "challenge" command
     if (name === 'challenge' && id) {
-      const userId = req.body.member.user.id;
+      // Interaction context
+      const context = req.body.context;
+      // User ID is in user field for (G)DMs, and member for servers
+      const userId = context === 0 ? req.body.member.user.id : req.body.user.id;
       // User's object choice
       const objectName = req.body.data.options[0].value;
 
@@ -137,8 +140,11 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       const gameId = componentId.replace('select_choice_', '');
 
       if (activeGames[gameId]) {
+        // Interaction context
+        const context = req.body.context;
         // Get user ID and object choice for responding user
-        const userId = req.body.member.user.id;
+        // User ID is in user field for (G)DMs, and member for servers
+        const userId = context === 0 ? req.body.member.user.id : req.body.user.id;
         const objectName = data.values[0];
         // Calculate result from helper function
         const resultStr = getResult(activeGames[gameId], {

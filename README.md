@@ -4,8 +4,6 @@ This project contains a basic rock-paper-scissors-style Discord app written in J
 
 ![Demo of app](https://github.com/discord/discord-example-app/raw/main/assets/getting-started-demo.gif?raw=true)
 
-> ✨ A version of this code is also hosted **[on Glitch 🎏](https://glitch.com/~getting-started-discord)** and **[on Replit 🌀](https://replit.com/github/discord/discord-example-app)**
-
 ## Project structure
 Below is a basic overview of the project structure:
 
@@ -91,7 +89,6 @@ You should see your connection open:
 Tunnel Status                 online
 Version                       2.0/2.0
 Web Interface                 http://127.0.0.1:4040
-Forwarding                    http://1234-someurl.ngrok.io -> localhost:3000
 Forwarding                    https://1234-someurl.ngrok.io -> localhost:3000
 
 Connections                  ttl     opn     rt1     rt5     p50     p90
