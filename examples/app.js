@@ -176,6 +176,8 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         }
       }
     }
+    
+    return;
   }
 
   console.error('unknown interaction type', type);
