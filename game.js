@@ -1,40 +1,5 @@
 import { capitalize } from './utils.js';
 
-export function getResult(p1, p2) {
-  let gameResult;
-  if (RPSChoices[p1.objectName] && RPSChoices[p1.objectName][p2.objectName]) {
-    // o1 wins
-    gameResult = {
-      win: p1,
-      lose: p2,
-      verb: RPSChoices[p1.objectName][p2.objectName],
-    };
-  } else if (
-    RPSChoices[p2.objectName] &&
-    RPSChoices[p2.objectName][p1.objectName]
-  ) {
-    // o2 wins
-    gameResult = {
-      win: p2,
-      lose: p1,
-      verb: RPSChoices[p2.objectName][p1.objectName],
-    };
-  } else {
-    // tie -- win/lose don't
-    gameResult = { win: p1, lose: p2, verb: 'tie' };
-  }
-
-  return formatResult(gameResult);
-}
-
-function formatResult(result) {
-  const { win, lose, verb } = result;
-  return verb === 'tie'
-    ? `<@${win.id}> and <@${lose.id}> draw with **${win.objectName}**`
-    : `<@${win.id}>'s **${win.objectName}** ${verb} <@${lose.id}>'s **${lose.objectName}**`;
-}
-
-// this is just to figure out winner + verb
 const RPSChoices = {
   rock: {
     description: 'sedimentary, igneous, or perhaps even metamorphic',
@@ -80,18 +45,54 @@ const RPSChoices = {
   },
 };
 
+export function getResult(p1, p2) {
+  // In case of self-play with same move, always return a tie
+  if (p1.id === p2.id && p1.objectName === p2.objectName) {
+    return `<@${p1.id}> tied with themselves using **${p1.objectName}**!`;
+  }
+
+  let gameResult;
+  if (RPSChoices[p1.objectName] && RPSChoices[p1.objectName][p2.objectName]) {
+    gameResult = {
+      win: p1,
+      lose: p2,
+      verb: RPSChoices[p1.objectName][p2.objectName],
+    };
+  } else if (
+    RPSChoices[p2.objectName] &&
+    RPSChoices[p2.objectName][p1.objectName]
+  ) {
+    gameResult = {
+      win: p2,
+      lose: p1,
+      verb: RPSChoices[p2.objectName][p1.objectName],
+    };
+  } else {
+    gameResult = { win: p1, lose: p2, verb: 'tie' };
+  }
+
+  return formatResult(gameResult);
+}
+
+function formatResult(result) {
+  const { win, lose, verb } = result;
+  if (win.id === lose.id) {
+    return `<@${win.id}> played against themselves! **${win.objectName}** vs **${lose.objectName}**${verb === 'tie' ? " - It's a tie!" : ` - ${win.objectName} ${verb} ${lose.objectName}`}`;
+  }
+  return verb === 'tie'
+    ? `<@${win.id}> and <@${lose.id}> draw with **${win.objectName}**`
+    : `<@${win.id}>'s **${win.objectName}** ${verb} <@${lose.id}>'s **${lose.objectName}**`;
+}
+
 export function getRPSChoices() {
   return Object.keys(RPSChoices);
 }
 
-// Function to fetch shuffled options for select menu
 export function getShuffledOptions() {
   const allChoices = getRPSChoices();
   const options = [];
 
   for (let c of allChoices) {
-    // Formatted for select menus
-    // https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
     options.push({
       label: capitalize(c),
       value: c.toLowerCase(),

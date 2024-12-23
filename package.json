@@ -16,9 +16,11 @@
   "author": "Shay DeWael",
   "license": "MIT",
   "dependencies": {
+    "discord": "^0.8.2",
     "discord-interactions": "^4.0.0",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "interactions": "^0.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"

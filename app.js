@@ -3,55 +3,113 @@ import express from 'express';
 import {
   InteractionType,
   InteractionResponseType,
-  verifyKeyMiddleware,
+  MessageComponentTypes,
+  ButtonStyleTypes,
+  verifyKeyMiddleware
 } from 'discord-interactions';
 import { getRandomEmoji } from './utils.js';
+import { getResult, getRPSChoices } from './game.js';
 
-// Create an express app
 const app = express();
-// Get port, or default to 3000
 const PORT = process.env.PORT || 3000;
+const activeGames = {};
 
-/**
- * Interactions endpoint URL where Discord will send HTTP requests
- * Parse request body and verifies incoming requests using discord-interactions package
- */
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
-  // Interaction type and data
   const { type, data } = req.body;
 
-  /**
-   * Handle verification requests
-   */
   if (type === InteractionType.PING) {
     return res.send({ type: InteractionResponseType.PONG });
   }
 
-  /**
-   * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
-   */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
 
-    // "test" command
     if (name === 'test') {
-      // Send a message into the channel where command was triggered from
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          // Fetches a random emoji to send from a helper function
           content: `hello world ${getRandomEmoji()}`,
         },
       });
     }
 
-    console.error(`unknown command: ${name}`);
-    return res.status(400).json({ error: 'unknown command' });
+    if (name === 'challenge') {
+      const userId = req.body.member?.user?.id || req.body.user?.id;
+      const objectName = data.options[0].value;
+      const gameId = req.body.id;
+
+      activeGames[gameId] = {
+        id: userId,
+        objectName,
+        challenger: true  // Mark this as the challenger's move
+      };
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Rock papers scissors challenge from <@${userId}>`,
+          components: [
+            {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+                {
+                  type: MessageComponentTypes.BUTTON,
+                  custom_id: `accept_button_${gameId}`,
+                  label: 'Accept',
+                  style: ButtonStyleTypes.PRIMARY,
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
   }
 
-  console.error('unknown interaction type', type);
-  return res.status(400).json({ error: 'unknown interaction type' });
+  if (type === InteractionType.MESSAGE_COMPONENT) {
+    const componentId = data.custom_id;
+    
+    if (componentId.startsWith('accept_button_')) {
+      const gameId = componentId.replace('accept_button_', '');
+      const game = activeGames[gameId];
+      
+      if (!game) {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'This game is no longer valid.',
+            flags: 64,
+          },
+        });
+      }
+
+      const userId = req.body.member?.user?.id || req.body.user?.id;
+
+      // For self-play, use the same move
+      const result = getResult(
+        { id: game.id, objectName: game.objectName },
+        { id: userId, objectName: game.objectName }
+      );
+
+      delete activeGames[gameId];
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: result,
+          components: [],  // Remove the button after the game is complete
+        },
+      });
+    }
+  }
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: 'An error occurred while processing the command.',
+      flags: 64,
+    },
+  });
 });
 
 app.listen(PORT, () => {
