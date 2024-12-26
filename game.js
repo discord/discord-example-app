@@ -46,7 +46,6 @@ const RPSChoices = {
 };
 
 export function getResult(p1, p2) {
-  // In case of self-play with same move, always return a tie
   if (p1.id === p2.id && p1.objectName === p2.objectName) {
     return `<@${p1.id}> tied with themselves using **${p1.objectName}**!`;
   }
@@ -58,10 +57,7 @@ export function getResult(p1, p2) {
       lose: p2,
       verb: RPSChoices[p1.objectName][p2.objectName],
     };
-  } else if (
-    RPSChoices[p2.objectName] &&
-    RPSChoices[p2.objectName][p1.objectName]
-  ) {
+  } else if (RPSChoices[p2.objectName] && RPSChoices[p2.objectName][p1.objectName]) {
     gameResult = {
       win: p2,
       lose: p1,

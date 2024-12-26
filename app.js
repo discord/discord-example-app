@@ -5,10 +5,11 @@ import {
   InteractionResponseType,
   MessageComponentTypes,
   ButtonStyleTypes,
+  InteractionResponseFlags,
   verifyKeyMiddleware
 } from 'discord-interactions';
-import { getRandomEmoji } from './utils.js';
-import { getResult, getRPSChoices } from './game.js';
+import { getRandomEmoji, DiscordRequest } from './utils.js';
+import { getResult, getRPSChoices, getShuffledOptions } from './game.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -39,15 +40,15 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       const gameId = req.body.id;
 
       activeGames[gameId] = {
-        id: userId,
-        objectName,
-        challenger: true  // Mark this as the challenger's move
+        challengerId: userId,
+        challengerChoice: objectName,
+        timestamp: Date.now()
       };
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `Rock papers scissors challenge from <@${userId}>`,
+          content: `<@${userId}> challenges you to Rock Paper Scissors! ${getRandomEmoji()}`,
           components: [
             {
               type: MessageComponentTypes.ACTION_ROW,
@@ -55,7 +56,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
                 {
                   type: MessageComponentTypes.BUTTON,
                   custom_id: `accept_button_${gameId}`,
-                  label: 'Accept',
+                  label: 'Accept Challenge',
                   style: ButtonStyleTypes.PRIMARY,
                 },
               ],
@@ -77,39 +78,109 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: 'This game is no longer valid.',
-            flags: 64,
+            content: 'This challenge is no longer valid.',
+            flags: InteractionResponseFlags.EPHEMERAL,
           },
         });
       }
 
       const userId = req.body.member?.user?.id || req.body.user?.id;
+      
+      if (userId === game.challengerId) {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'You cannot accept your own challenge!',
+            flags: InteractionResponseFlags.EPHEMERAL,
+          },
+        });
+      }
 
-      // For self-play, use the same move
-      const result = getResult(
-        { id: game.id, objectName: game.objectName },
-        { id: userId, objectName: game.objectName }
-      );
+      try {
+        await res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'Choose your object! 🎮',
+            flags: InteractionResponseFlags.EPHEMERAL,
+            components: [
+              {
+                type: MessageComponentTypes.ACTION_ROW,
+                components: [
+                  {
+                    type: MessageComponentTypes.STRING_SELECT,
+                    custom_id: `select_choice_${gameId}`,
+                    options: getShuffledOptions(),
+                  },
+                ],
+              },
+            ],
+          },
+        });
 
-      delete activeGames[gameId];
+        const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
+        await DiscordRequest(endpoint, { method: 'DELETE' });
+      } catch (err) {
+        console.error('Error handling button interaction:', err);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'An error occurred while processing the challenge.',
+            flags: InteractionResponseFlags.EPHEMERAL,
+          },
+        });
+      }
+    } else if (componentId.startsWith('select_choice_')) {
+      const gameId = componentId.replace('select_choice_', '');
+      const game = activeGames[gameId];
 
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: result,
-          components: [],  // Remove the button after the game is complete
-        },
-      });
+      if (!game) {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'This game is no longer valid.',
+            flags: InteractionResponseFlags.EPHEMERAL,
+          },
+        });
+      }
+
+      const userId = req.body.member?.user?.id || req.body.user?.id;
+      const objectName = data.values[0];
+
+      try {
+        const result = getResult(
+          { id: game.challengerId, objectName: game.challengerChoice },
+          { id: userId, objectName: objectName }
+        );
+
+        delete activeGames[gameId];
+
+        await res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `${result} ${getRandomEmoji()}`,
+          },
+        });
+
+        const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
+        await DiscordRequest(endpoint, {
+          method: 'PATCH',
+          body: {
+            content: `You chose ${objectName}! ${getRandomEmoji()}`,
+            components: [],
+          },
+        });
+      } catch (err) {
+        console.error('Error handling select menu interaction:', err);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: 'An error occurred while processing your choice.',
+            flags: InteractionResponseFlags.EPHEMERAL,
+          },
+        });
+      }
     }
   }
-
-  return res.send({
-    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-    data: {
-      content: 'An error occurred while processing the command.',
-      flags: 64,
-    },
-  });
 });
 
 app.listen(PORT, () => {
