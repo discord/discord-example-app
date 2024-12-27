@@ -69,11 +69,11 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
   if (type === InteractionType.MESSAGE_COMPONENT) {
     const componentId = data.custom_id;
-    
+
     if (componentId.startsWith('accept_button_')) {
       const gameId = componentId.replace('accept_button_', '');
       const game = activeGames[gameId];
-      
+
       if (!game) {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -85,16 +85,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       }
 
       const userId = req.body.member?.user?.id || req.body.user?.id;
-      
-      if (userId === game.challengerId) {
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: 'You cannot accept your own challenge!',
-            flags: InteractionResponseFlags.EPHEMERAL,
-          },
-        });
-      }
 
       try {
         await res.send({
@@ -152,12 +142,28 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           { id: userId, objectName: objectName }
         );
 
+        // Log both players' choices and the result
+        console.log(
+          `Game ID: ${gameId}, Challenger: <@${game.challengerId}> (${game.challengerChoice}), Opponent: <@${userId}> (${objectName}), Result: ${result}`
+        );
+
+        let winnerMessage;
+        const winnerId = getWinnerId(game.challengerChoice, objectName, game.challengerId, userId);
+        
+        if (winnerId === game.challengerId) {
+          winnerMessage = `<@${game.challengerId}> wins! They chose ${game.challengerChoice}. ${result}`;
+        } else if (winnerId === userId) {
+          winnerMessage = `<@${userId}> wins! They chose ${objectName}. ${result}`;
+        } else {
+          winnerMessage = "It's a draw! Both players chose the same object.";
+        }
+
         delete activeGames[gameId];
 
         await res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `${result} ${getRandomEmoji()}`,
+            content: `${winnerMessage} ${getRandomEmoji()}`,
           },
         });
 
@@ -182,6 +188,24 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     }
   }
 });
+
+function getWinnerId(challengerChoice, opponentChoice, challengerId, opponentId) {
+  const rules = {
+    rock: 'scissors',
+    paper: 'rock',
+    scissors: 'paper'
+  };
+
+  if (challengerChoice === opponentChoice) {
+    return null; // It's a draw
+  }
+
+  if (rules[challengerChoice] === opponentChoice) {
+    return challengerId; // Challenger wins
+  } else {
+    return opponentId; // Opponent wins
+  }
+}
 
 app.listen(PORT, () => {
   console.log('Listening on port', PORT);
