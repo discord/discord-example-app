@@ -16,6 +16,7 @@
   "author": "Shay DeWael",
   "license": "MIT",
   "dependencies": {
+    "@discord/embedded-app-sdk": "^1.8.1",
     "discord": "^0.8.2",
     "discord-interactions": "^4.0.0",
     "dotenv": "^16.4.7",
