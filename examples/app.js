@@ -80,7 +80,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
                 {
                   type: MessageComponentTypes.BUTTON,
                   // Append the game ID to use later on
-                  custom_id: `accept_button_${req.body.id}`,
+                  custom_id: `accept_button_${id}`,
                   label: 'Accept',
                   style: ButtonStyleTypes.PRIMARY,
                 },
