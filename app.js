@@ -1,59 +1,64 @@
 import 'dotenv/config';
 import express from 'express';
 import {
-  ButtonStyleTypes,
-  InteractionResponseFlags,
-  InteractionResponseType,
   InteractionType,
-  MessageComponentTypes,
+  InteractionResponseType,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import { getRandomEmoji, DiscordRequest } from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
+import {
+  handleRegister,
+  handleAddAccount,
+  handleVerifyStatus,
+  handleUpload,
+  handleStats,
+  handleLeaderboard,
+  handleTest
+} from './handlers/index.js';
 
 // Create an express app
 const app = express();
-// Get port, or default to 3000
 const PORT = process.env.PORT || 3000;
-// To keep track of our active games
-const activeGames = {};
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
  * Parse request body and verifies incoming requests using discord-interactions package
  */
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
-  // Interaction id, type and data
-  const { id, type, data } = req.body;
+  const { type, data, member } = req.body;
 
-  /**
-   * Handle verification requests
-   */
   if (type === InteractionType.PING) {
     return res.send({ type: InteractionResponseType.PONG });
   }
 
-  /**
-   * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
-   */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name } = data;
+    const { name, options } = data;
 
-    // "test" command
-    if (name === 'test') {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: `hello world ${getRandomEmoji()}`,
-        },
-      });
+    switch (name) {
+      case 'test':
+        return handleTest(req, res, member);
+
+      case 'register':
+        return handleRegister(req, res, member);
+      
+      case 'add-account':
+        return handleAddAccount(req, res, member, options);
+      
+      case 'verify-status':
+        return handleVerifyStatus(req, res, member, options);
+      
+      case 'upload':
+        return handleUpload(req, res, member, options);
+      
+      case 'stats':
+        return handleStats(req, res, member);
+      
+      case 'leaderboard':
+        return handleLeaderboard(req, res);
+      
+      default:
+        console.error(`Unknown command: ${name}`);
+        return res.status(400).json({ error: 'Unknown command' });
     }
-
-    console.error(`unknown command: ${name}`);
-    return res.status(400).json({ error: 'unknown command' });
   }
 
   console.error('unknown interaction type', type);
