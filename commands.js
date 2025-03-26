@@ -10,6 +10,12 @@ const TEST_COMMAND = {
   contexts: [0, 1, 2],
 };
 
+const SETUP_REGISTER_COMMAND = {
+  name: 'setup-register',
+  description: 'Setup the registration channel with welcome message (Admin only)',
+  type: 1,
+  default_member_permissions: '8', // Requires administrator permission (8)
+};
 
 const REGISTER_COMMAND = {
   name: 'register',
@@ -97,6 +103,7 @@ const LEADERBOARD_COMMAND = {
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
+  SETUP_REGISTER_COMMAND,
   REGISTER_COMMAND,
   ADD_ACCOUNT_COMMAND,
   VERIFY_STATUS_COMMAND,

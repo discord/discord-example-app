@@ -1,8 +1,12 @@
 import { InteractionResponseType } from 'discord-interactions';
 import db from '../models/index.js';
+import { MessageTemplates } from '../utils/messageTemplates.js';
+import addRole from '../utils/roleManager.js';
 
-export default async function handleRegister(req, res, member) {
+export async function handleRegister(req, res, guild, member) {
   try {
+    const guildId = guild['id'];
+
     const [user, created] = await db.User.findOrCreate({
       where: { discordId: member.user.id },
       defaults: {
@@ -10,37 +14,35 @@ export default async function handleRegister(req, res, member) {
       }
     });
 
-    if (!created) {
-      const hasVerifiedAccounts = await db.SocialMediaAccount.findOne({
-        where: {
-          userId: user.id,
-          isVerified: true
-        }
+    if (!created && user) {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: MessageTemplates.alreadyRegistered(),
       });
+    }
 
-      if (hasVerifiedAccounts) {
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: '✅ You are already registered and verified!'
-          }
-        });
-      }
+    if (created) {
+      await addRole(member.user.id, guildId, process.env.MEMBER_ROLE_NAME);
     }
 
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: 'Welcome! Please use `/add-account` to link your social media accounts.'
+        embeds: [{
+          title: "Welcome to Clipping Bot",
+          description: "We're so glad you've chosen one of our programs to contribute to!\n\n" +
+            "Our records indicate that you don't yet have any accounts linked, so let's fix that.\n\n" +
+            "Once you have an account on any of our supported platforms (TikTok, Instagram, " +
+            "YouTube, or X / Twitter), use `/add-account` to begin the verification process.",
+          color: 0x5865F2,
+        }],
+        flags:  64 
       }
     });
   } catch (error) {
-    console.error('Registration error:', error);
-    return res.status(500).send({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: 'There was an error processing your registration. Please try again.'
-      }
-    });
+    console.error('Error in handleRegister:', error);
+    return res.status(500).send({ error: 'Failed to handle registration' });
   }
 } 
+
+export default handleRegister;

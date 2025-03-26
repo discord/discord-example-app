@@ -38,7 +38,8 @@ export default async function handleAddAccount(req, res, member, options) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: 'This account is already registered. Use `/verify-status` to check verification.'
+          content: 'This account is already registered. Use `/verify-status` to check verification.',
+          flags: 64
         }
       });
     }
@@ -47,7 +48,8 @@ export default async function handleAddAccount(req, res, member, options) {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
         content: `Please add this code to your ${platform} bio: ${verificationCode}\n` +
-                'Once added, use `/verify-status` to verify your account.'
+                'Once added, use `/verify-status` to verify your account.',
+        flags: 64
       }
     });
   } catch (error) {
@@ -55,7 +57,8 @@ export default async function handleAddAccount(req, res, member, options) {
     return res.status(500).send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: 'There was an error adding your account. Please try again.'
+        content: 'There was an error adding your account. Please try again.',
+        flags: 64
       }
     });
   }

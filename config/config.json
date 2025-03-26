@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "daniel",
+    "password": null,
+    "database": "clipmore",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
