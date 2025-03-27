@@ -185,5 +185,48 @@ export const MessageTemplates = {
       timestamp: new Date().toISOString()
     }],
     flags: 64
+  }),
+
+  // Add new campaign-related templates
+  campaignCreationInProgress: () => ({
+    data: {
+      content: 'Creating campaign...',
+      flags: 64
+    }
+  }),
+
+  campaignAnnouncement: (campaign) => ({
+    embeds: [{
+      title: '🎉 New Campaign Created!',
+      color: 0x00ff00,
+      fields: [
+        { name: 'Campaign Name', value: campaign.name, inline: false },
+        { name: 'Rate per View/Like', value: `$${campaign.rate}`, inline: true },
+        { name: 'Maximum Payout', value: `$${campaign.maxPayout}`, inline: true },
+        { name: 'Server Link', value: campaign.serverUrl, inline: false },
+        ...(campaign.description ? [{ name: 'Description', value: campaign.description, inline: false }] : []),
+        ...(campaign.endDate ? [{ name: 'End Date', value: campaign.endDate.toLocaleDateString(), inline: true }] : [])
+      ],
+      footer: {
+        text: `Campaign ID: ${campaign.id}`
+      },
+      timestamp: new Date()
+    }]
+  }),
+
+  campaignCreationSuccess: (name, id, status) => ({
+    content: `Campaign "${name}" created successfully!\nID: ${id}\nStatus: ${status}`
+  }),
+
+  campaignCreationError: () => ({
+    content: 'There was an error creating the campaign. Please try again.'
+  }),
+
+  campaignAnnouncementError: () => ({
+    content: 'Campaign created but failed to post announcement.'
+  }),
+
+  invalidEndDate: () => ({
+    content: 'Invalid end date format. Please use YYYY-MM-DD'
   })
 }; 

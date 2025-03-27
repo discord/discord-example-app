@@ -29,6 +29,11 @@ export default (sequelize) => {
         model: 'SocialMediaAccounts',
         key: 'id'
       }
+    },
+    lastMetadataUpdate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: DataTypes.NOW
     }
   });
 
