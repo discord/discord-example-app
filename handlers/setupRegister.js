@@ -16,6 +16,7 @@ export async function handleSetupRegister(req, res, guild) {
     if (!client.isReady()) {
       throw new Error('Discord client is not ready');
     }
+    
 
     // Get the guild using the client
     const guildObj = await client.guilds.fetch(guild.id);

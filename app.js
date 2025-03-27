@@ -14,8 +14,11 @@ import {
   handleStats,
   handleLeaderboard,
   handleTest,
-  handleSetupRegister
+  handleSetupRegister,
+  handleMyAccounts,
+  handleCreateCampaign
 } from './handlers/index.js';
+import { scheduleMetadataUpdates, runMetadataUpdate } from './tasks/updateMetadata.js';
 
 // Create an express app
 const app = express();
@@ -71,6 +74,12 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         // Handle setting up the registration channel
         return handleSetupRegister(req, res, guild);
       
+      case 'my-accounts':
+        return handleMyAccounts(req, res, member);
+
+      case 'create-campaign':
+        return handleCreateCampaign(req, res, guild, member, options);
+      
       default:
         console.error(`Unknown command: ${name}`);
         return res.status(400).json({ error: 'Unknown command' });
@@ -80,6 +89,10 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
   console.error('unknown interaction type', type);
   return res.status(400).json({ error: 'unknown interaction type' });
 });
+
+// Start the cron job
+scheduleMetadataUpdates();
+// runMetadataUpdate()
 
 app.listen(PORT, () => {
   console.log('Listening on port', PORT);

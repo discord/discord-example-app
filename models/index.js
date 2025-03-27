@@ -4,7 +4,7 @@ import UserModel from './User.js';
 import SocialMediaAccountModel from './SocialMediaAccount.js';
 import ClipModel from './Clip.js';
 import PaymentModel from './Payment.js';
-
+import CampaignModel from './Campaign.js';
 dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -27,7 +27,8 @@ const db = {
   User: UserModel(sequelize),
   SocialMediaAccount: SocialMediaAccountModel(sequelize),
   Clip: ClipModel(sequelize),
-  Payment: PaymentModel(sequelize)
+  Payment: PaymentModel(sequelize),
+  Campaign: CampaignModel(sequelize)
 };
 
 // Setup associations

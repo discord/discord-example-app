@@ -38,6 +38,8 @@ export default async function handleUpload(req, res, member, options) {
           acc.platform === platform && acc.username === username
         );
 
+        console.log(account);
+
         if (!account) {
           errors.push(`Clip doesn't belong to any of your verified accounts: ${url}`);
           continue;

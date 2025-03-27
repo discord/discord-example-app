@@ -40,11 +40,11 @@ async function extractInstagramUsername(url) {
           try {
             const body = Buffer.concat(chunks);
             const data = JSON.parse(body.toString());
-            
+            console.log(data);
             if (data.data && data.data.items && data.data.items[0] && data.data.items[0].user) {
               resolve(data.data.items[0].user.username);
             } else {
-              reject(new Error('Could not extract username from Instagram response'));
+              reject(new Error(data.message));
             }
           } catch (error) {
             reject(new Error(`Failed to parse Instagram API response: ${error.message}`));
@@ -107,6 +107,7 @@ export async function validateClipUrl(url) {
         throw new Error('URL must be an Instagram reel or post');
       }
       const username = await extractInstagramUsername(url);
+      console.log(username);
       return {
         platform: 'INSTAGRAM',
         username
