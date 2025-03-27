@@ -29,7 +29,7 @@ export async function handleRegister(req, res, guild, member) {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
         embeds: [{
-          title: "Welcome to Clipping Bot",
+          title: "Welcome to ClipMore",
           description: "We're so glad you've chosen one of our programs to contribute to!\n\n" +
             "Our records indicate that you don't yet have any accounts linked, so let's fix that.\n\n" +
             "Once you have an account on any of our supported platforms (TikTok, Instagram, " +

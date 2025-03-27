@@ -2,8 +2,8 @@ export const MessageTemplates = {
   // Verification status messages
   verificationSuccess: (platform, username) => ({
     embeds: [{
-      title: "✅ Verification Status",
-      description: `Your ${platform} account (@${username}) is already verified!`,
+      title: "🎉 Verification Successful 🎉",
+      description: `Your ${platform} account (@${username}) has been successfully verified! You can now start posting and tracking content from this account.`,
       color: 0x00FF00,
       timestamp: new Date().toISOString()
     }],
@@ -12,8 +12,8 @@ export const MessageTemplates = {
 
   verificationInProgress: (platform, username) => ({
     embeds: [{
-      title: "🔄 Verification In Progress",
-      description: "Verification status requested. Please check your DMs in a few minutes.",
+      title: "🔄 Verification In Progress 🔄",
+      description: `Your ${platform} account (@${username}) has been added and verification is in progress. You will receive a DM from the ClipMore Bot once verified. If it has been longer than 5 minutes, run \`/verify-status\` again.\n\nIf it has been longer than 15 minutes, please open a ticket on the main ClipMore server.`,
       color: 0xFFA500,
       fields: [
         {
@@ -34,7 +34,7 @@ export const MessageTemplates = {
 
   verificationFailed: (platform, username, verificationCode) => ({
     embeds: [{
-      title: "❌ Verification Failed",
+      title: "❌ Verification Failed ❌",
       description: `Verification code (${verificationCode}) not found in your ${platform} bio. Please add it and try again.`,
       color: 0xFF0000,
       fields: [
@@ -57,7 +57,7 @@ export const MessageTemplates = {
   // Welcome DM message
   welcomeMessage: () => ({
     embeds: [{
-      title: "🎉 Welcome to the Server!",
+      title: "🎉 Welcome to the Server! 🎉",
       description: "You have been successfully verified and granted access to the server.",
       color: 0x00FF00,
       fields: [
@@ -73,7 +73,7 @@ export const MessageTemplates = {
   // Error messages
   accountNotFound: () => ({
     embeds: [{
-      title: "❌ Account Not Found",
+      title: "❌ Account Not Found ❌",
       description: "Account not found. Please register this account first using `/register`.",
       color: 0xFF0000,
       timestamp: new Date().toISOString()
@@ -83,8 +83,8 @@ export const MessageTemplates = {
 
   generalError: () => ({
     embeds: [{
-      title: "⚠️ Error",
-      description: "There was an error checking verification status. Please try again.",
+      title: "❌ Error ❌",
+      description: "There was an error checking verification status. Please try again. If this continues happening, please reach out to us by opening a ticket on the main ClipMore server.",
       color: 0xFF0000,
       timestamp: new Date().toISOString()
     }],
@@ -94,8 +94,8 @@ export const MessageTemplates = {
   // Registration messages
   alreadyRegistered: () => ({
     embeds: [{
-      title: "✅ Already Registered",
-      description: "You are already registered! Use `/add-account` to link your social media accounts.",
+      title: "✅ Already Registered ✅",
+      description: "You are already registered! Use `/add-account` to link some more social media accounts.",
       color: 0x00FF00,
       timestamp: new Date().toISOString()
     }],
@@ -104,7 +104,7 @@ export const MessageTemplates = {
 
   registrationSuccess: () => ({
     embeds: [{
-      title: "👋 Welcome!",
+      title: "👋 Welcome! 👋",
       description: "Your registration was successful.",
       color: 0x00FF00,
       fields: [
@@ -121,8 +121,8 @@ export const MessageTemplates = {
   // Add new upload-related templates
   noVerifiedAccounts: () => ({
     embeds: [{
-      title: "❌ Upload Failed",
-      description: "You need at least one verified social media account to upload clips.",
+      title: "❌ Upload Failed ❌",
+      description: "You need at least one verified social media account to upload clips. Please add an account by running \`/add-account\` and try again. ",
       color: 0xFF0000,
       timestamp: new Date().toISOString()
     }],
@@ -169,7 +169,7 @@ export const MessageTemplates = {
 
   uploadError: () => ({
     embeds: [{
-      title: "❌ Upload Error",
+      title: "❌ Upload Error ❌",
       description: "There was an error processing your upload. Please try again.",
       color: 0xFF0000,
       timestamp: new Date().toISOString()
@@ -179,8 +179,8 @@ export const MessageTemplates = {
 
   uploadProcessing: (clipCount) => ({
     embeds: [{
-      title: "🔄 Processing Uploads",
-      description: `Processing ${clipCount} clip${clipCount > 1 ? 's' : ''}. You'll receive a DM when complete.`,
+      title: "🔄 Processing Uploads 🔄",
+      description: `Processing ${clipCount} clip${clipCount > 1 ? 's' : ''}. You'll receive a DM from the ClipMore Bot when complete.`,
       color: 0xFFA500,
       timestamp: new Date().toISOString()
     }],
