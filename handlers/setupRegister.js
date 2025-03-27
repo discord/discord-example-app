@@ -26,30 +26,36 @@ export async function handleSetupRegister(req, res, guild) {
       await guildObj.channels.create({
         name: 'register',
         type: 0, // GUILD_TEXT
-        topic: 'Register for Clipping Bot here'
+        topic: 'Register for ClipMore here'
       });
 
     // Send the welcome message with button
     await channel.send({
       embeds: [{
-        title: "Welcome to Clipping Bot",
-        description: "Please click the button below to begin the registration process.\n\n" +
-          "If you have used our services before, you will have access to all of your accounts " +
-          "from across every Clipping exe server after registering.\n\n" +
-          "If you haven't, you will be guided through the account registration process.\n\n" +
-          "Thank you for clipping!",
-        color: 0x5865F2,
+        title: "✨ Welcome to ClipMore ✨",
+        description: "### Ready to Get Started?\n" +
+          "> 🎥 Click the button below to begin your registration journey!\n\n" +
+          "**Returning User?**\n" +
+          "• All your existing accounts across ClipMore servers will be automatically connected\n\n" +
+          "**New to ClipMore?**\n" +
+          "• Don't worry! We'll guide you through every step of the process\n\n" +
+          "🌟 *Thank you for choosing ClipMore!*",
+        color: 0x7289DA, // A softer Discord blue
+        thumbnail: {
+          url: "https://drive.usercontent.google.com/download?id=1Aq7kl39paKgFaxqiNAjRcRPw7QoQfGSM"
+        },
         footer: {
-          text: "Clipping.bot 2025"
-        }
+          text: "ClipMore Bot • Making Content Creation Easier"
+        },
+        timestamp: new Date().toISOString()
       }],
       components: [{
         type: MessageComponentTypes.ACTION_ROW,
         components: [{
           type: MessageComponentTypes.BUTTON,
           custom_id: "register_button",
-          label: "Register",
-          style: 1, // PRIMARY
+          label: "🎬 Register Now",
+          style: 1,
         }]
       }]
     });

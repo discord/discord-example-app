@@ -2,8 +2,8 @@ export const MessageTemplates = {
   // Verification status messages
   verificationSuccess: (platform, username) => ({
     embeds: [{
-      title: "🎉 Verification Successful 🎉",
-      description: `Your ${platform} account (@${username}) has been successfully verified! You can now start posting and tracking content from this account.`,
+      title: "✨ Account Verified Successfully ✨",
+      description: `Welcome to the ClipMore family! Your ${platform} account (@${username}) is now verified and ready to go. Start sharing your amazing content and track your growth with us!`,
       color: 0x00FF00,
       timestamp: new Date().toISOString()
     }],
@@ -12,8 +12,8 @@ export const MessageTemplates = {
 
   verificationInProgress: (platform, username) => ({
     embeds: [{
-      title: "🔄 Verification In Progress 🔄",
-      description: `Your ${platform} account (@${username}) has been added and verification is in progress. You will receive a DM from the ClipMore Bot once verified. If it has been longer than 5 minutes, run \`/verify-status\` again.\n\nIf it has been longer than 15 minutes, please open a ticket on the main ClipMore server.`,
+      title: "🎬 Verification In Progress 🎬",
+      description: `We're setting up your ${platform} account (@${username}) with ClipMore! You'll receive confirmation once everything is ready.\n\n⏱️ Taking longer than 5 minutes? Try \`/verify-status\` to check progress.\n\n⚡ Still waiting after 15 minutes? Our support team is ready to help - open a ticket in the main ClipMore server.`,
       color: 0xFFA500,
       fields: [
         {
@@ -57,13 +57,13 @@ export const MessageTemplates = {
   // Welcome DM message
   welcomeMessage: () => ({
     embeds: [{
-      title: "🎉 Welcome to the Server! 🎉",
-      description: "You have been successfully verified and granted access to the server.",
+      title: "🌟 Welcome to ClipMore! 🌟",
+      description: "Your journey with ClipMore begins now! We're excited to help monetize your content across platforms.",
       color: 0x00FF00,
       fields: [
         {
-          name: "Next Steps",
-          value: "Feel free to explore the channels and engage with the community!"
+          name: "Getting Started",
+          value: "• Explore our channels\n• Check out active opportunities\n• Start uploading and tracking your clips!"
         }
       ],
       timestamp: new Date().toISOString()
@@ -110,7 +110,7 @@ export const MessageTemplates = {
       fields: [
         {
           name: "Next Steps",
-          value: "Please use `/add-account` to link your social media accounts."
+          value: "Please use `/add-account` in the '#command-center' channel to link your social media accounts."
         }
       ],
       timestamp: new Date().toISOString()
@@ -121,8 +121,8 @@ export const MessageTemplates = {
   // Add new upload-related templates
   noVerifiedAccounts: () => ({
     embeds: [{
-      title: "❌ Upload Failed ❌",
-      description: "You need at least one verified social media account to upload clips. Please add an account by running \`/add-account\` and try again. ",
+      title: "❌ Upload Failed - Account Verification Needed ❌",
+      description: "You'll need at least one verified social media account to upload clips. Run `/add-account` in the `#command-center`channel to connect your platforms and join the ClipMore ecosystem.",
       color: 0xFF0000,
       timestamp: new Date().toISOString()
     }],
@@ -135,31 +135,35 @@ export const MessageTemplates = {
     
     // Create success table if there are successful uploads
     const successTable = results.length > 0 ? 
-      "| Platform | URL |\n" +
-      "|----------|-----|\n" +
-      results.map(({platform, url}) => `| ${platform} | ${url} |`).join('\n') +
-      "\n```\n" : '';
+      "| Platform | Status | URL |\n" +
+      "|----------|--------|-----|\n" +
+      results.map(({platform, url}) => `| ${platform} | ✅ Live | ${url} |`).join('\n') : '';
 
-    // Format errors with bullet points
+    // Format errors with more detailed bullet points
     const errorList = errors.length > 0 ?
-      "**Errors**\n" + errors.map(error => `• ${error}`).join('\n') : '';
+      errors.map(error => `❌ ${error}`).join('\n') : '';
 
     return {
       embeds: [{
-        title: "📤 Upload Results",
-        description: `${successCount} successful, ${errorCount} failed`,
+        title: "📊 Content Upload Summary 📊",
+        description: `${successCount} upload${successCount !== 1 ? 's' : ''} completed${errorCount ? ` • ${errorCount} need${errorCount === 1 ? 's' : ''} attention` : '!'}\n\n🔍 We're now tracking your content performance across platforms. Use \`/stats\` to check your metrics anytime!`,
         color: errors.length === 0 ? 0x00FF00 : (results.length > 0 ? 0xFFA500 : 0xFF0000),
         fields: [
           ...(successTable ? [{
-            name: "Successful Uploads",
+            name: "Upload Status",
             value: successTable,
             inline: false
           }] : []),
           ...(errorList ? [{
-            name: "Errors",
+            name: "Issues to Resolve",
             value: errorList,
             inline: false
-          }] : [])
+          }] : []),
+          {
+            name: "📱 What's Next?",
+            value: "• Your content metrics are now being tracked\n• Check performance with `/stats`\n",
+            inline: false
+          }
         ],
         timestamp: new Date().toISOString()
       }],
@@ -197,20 +201,47 @@ export const MessageTemplates = {
 
   campaignAnnouncement: (campaign) => ({
     embeds: [{
-      title: '🎉 New Campaign Created!',
-      color: 0x00ff00,
+      title: '🌟 NEW OPPORTUNITY ALERT 🌟',
+      description: '```diff\n+ Limited Time Clipping Campaign!\n```',
+      color: 0x2b2d31, // Discord dark theme color
       fields: [
-        { name: 'Campaign Name', value: campaign.name, inline: false },
-        { name: 'Rate per View/Like', value: `$${campaign.rate}`, inline: true },
-        { name: 'Maximum Payout', value: `$${campaign.maxPayout}`, inline: true },
-        { name: 'Server Link', value: campaign.serverUrl, inline: false },
-        ...(campaign.description ? [{ name: 'Description', value: campaign.description, inline: false }] : []),
-        ...(campaign.endDate ? [{ name: 'End Date', value: campaign.endDate.toLocaleDateString(), inline: true }] : [])
+        {
+          name: '📢 Campaign',
+          value: `**${campaign.name}**\n━━━━━━━━━━━━━━━━`,
+          inline: false
+        },
+        {
+          name: '💰 Payrate',
+          value: `**$${campaign.rate * 1000000} per 1M views**\n*Payouts begin at 100k views*`,
+          inline: false
+        },
+        ...(campaign.description ? [{
+          name: '📝 Campaign Details',
+          value: `>>> ${campaign.description}`,
+          inline: false
+        }] : []),
+        ...(campaign.endDate ? [{
+          name: '⏰ Available Until',
+          value: `<t:${Math.floor(campaign.endDate.getTime() / 1000)}:F>`,
+          inline: false
+        }] : [])
       ],
+      thumbnail: {
+        url: 'https://drive.usercontent.google.com/download?id=1Aq7kl39paKgFaxqiNAjRcRPw7QoQfGSM'
+      },
       footer: {
-        text: `Campaign ID: ${campaign.id}`
+        text: `Campaign Reference: ${campaign.id} • ClipMore`,
       },
       timestamp: new Date()
+    }],
+    components: [{
+      type: 1,
+      components: [{
+        type: 2,
+        style: 5, // Link button style
+        label: '🚀 Join Campaign',
+        url: campaign.serverUrl
+      }]
     }]
   }),
 

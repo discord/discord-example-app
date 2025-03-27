@@ -33,7 +33,7 @@ export async function handleRegister(req, res, guild, member) {
           description: "We're so glad you've chosen one of our programs to contribute to!\n\n" +
             "Our records indicate that you don't yet have any accounts linked, so let's fix that.\n\n" +
             "Once you have an account on any of our supported platforms (TikTok, Instagram, " +
-            "YouTube, or X / Twitter), use `/add-account` to begin the verification process.",
+            "YouTube, or X / Twitter), use `/add-account` in the '#command-center' channel to begin the verification process.",
           color: 0x5865F2,
         }],
         flags:  64 

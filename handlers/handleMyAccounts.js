@@ -30,7 +30,7 @@ export async function handleMyAccounts(req, res, member) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "You don't have any social media accounts linked yet. Use `/add-account` to link one!",
+          content: "You don't have any social media accounts linked yet. Use `/add-account` in the '#command-center' channel to link one!",
           flags: 64
         }
       });
@@ -58,7 +58,7 @@ export async function handleMyAccounts(req, res, member) {
           description: accountsList,
           color: 0x3498db,
           footer: {
-            text: 'Use /add-account to link more accounts'
+            text: 'Use /add-account in the #command-center channel to link more accounts'
           }
         }],
         flags: 64
