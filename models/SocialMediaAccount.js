@@ -13,7 +13,8 @@ export default (sequelize) => {
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     isVerified: {
       type: DataTypes.BOOLEAN,

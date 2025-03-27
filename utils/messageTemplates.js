@@ -228,5 +228,50 @@ export const MessageTemplates = {
 
   invalidEndDate: () => ({
     content: 'Invalid end date format. Please use YYYY-MM-DD'
+  }),
+
+  // Add account messages
+  accountAlreadyRegistered: (platform, username) => ({
+    embeds: [{
+      title: "⚠️ Account Already Registered ⚠️",
+      description: "You have already registered this account. Use `/verify-status` to check verification.",
+      color: 0xFFA500,
+      fields: [
+        {
+          name: "Platform",
+          value: platform,
+          inline: true
+        },
+        {
+          name: "Username",
+          value: `@${username}`,
+          inline: true
+        }
+      ],
+      timestamp: new Date().toISOString()
+    }],
+    flags: 64
+  }),
+
+  accountAlreadyClaimed: (platform, username) => ({
+    embeds: [{
+      title: "❌ Account Already Claimed ❌",
+      description: "This account has already been registered by another user. Please try again with a different account.",
+      color: 0xFF0000,
+      fields: [
+        {
+          name: "Platform",
+          value: platform,
+          inline: true
+        },
+        {
+          name: "Username",
+          value: `@${username}`,
+          inline: true
+        }
+      ],
+      timestamp: new Date().toISOString()
+    }],
+    flags: 64
   })
 }; 

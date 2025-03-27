@@ -1,5 +1,6 @@
 import https from 'https';
 import db from '../models/index.js';
+import { where } from 'sequelize';
 
 const PLATFORM_PATTERNS = {
   INSTAGRAM: {
@@ -225,7 +226,8 @@ export async function extractClipMetadata(url) {
 export async function updateClipsMetadata() {
   try {
     // Get all clips from database
-    const clips = await db.Clip.findAll();
+    const clips = await db.Clip.findAll()
+        // Find all clips where campaigns are active and have a posted date after campaign start date);
     console.log(`Starting metadata update for ${clips.length} clips`);
 
     const results = {

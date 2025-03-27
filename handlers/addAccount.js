@@ -1,6 +1,7 @@
 import { InteractionResponseType } from 'discord-interactions';
 import db from '../models/index.js';
 import crypto from 'crypto';
+import { MessageTemplates } from '../utils/messageTemplates.js';
 
 export default async function handleAddAccount(req, res, member, options) {
   const platform = options.find(opt => opt.name === 'platform').value;
@@ -15,34 +16,42 @@ export default async function handleAddAccount(req, res, member, options) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: 'Please register first using `/register`'
-        }
-      });
-    }
-
-    const verificationCode = crypto.randomBytes(4).toString('hex');
-    
-    const [account, created] = await db.SocialMediaAccount.findOrCreate({
-      where: {
-        userId: user.id,
-        platform,
-        username
-      },
-      defaults: {
-        verificationCode,
-        isVerified: false
-      }
-    });
-
-    if (!created) {
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: 'This account is already registered. Use `/verify-status` to check verification.',
+          content: 'Please register first using `/register`',
           flags: 64
         }
       });
     }
+
+    const existingAccount = await db.SocialMediaAccount.findOne({
+      where: {
+        platform,
+        username
+      }
+    });
+
+    if (existingAccount) {
+      if (existingAccount.userId === user.id) {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: MessageTemplates.accountAlreadyRegistered(platform, username)
+        });
+      } else {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: MessageTemplates.accountAlreadyClaimed(platform, username)
+        });
+      }
+    }
+
+    const verificationCode = crypto.randomBytes(4).toString('hex');
+    
+    const account = await db.SocialMediaAccount.create({
+      userId: user.id,
+      platform,
+      username,
+      verificationCode,
+      isVerified: false
+    });
 
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

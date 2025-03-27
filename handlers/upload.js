@@ -46,6 +46,8 @@ export default async function handleUpload(req, res, member, options) {
         }
 
         const metadata = await extractClipMetadata(url);
+
+        console.log(metadata);
         
         const [clip, created] = await db.Clip.findOrCreate({
           where: {
