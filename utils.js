@@ -10,7 +10,6 @@ export async function DiscordRequest(endpoint, options) {
     headers: {
       Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
       'Content-Type': 'application/json; charset=UTF-8',
-      'User-Agent': 'DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)',
     },
     ...options
   });
@@ -35,13 +34,29 @@ export async function InstallGlobalCommands(appId, commands) {
     console.error(err);
   }
 }
-
-// Simple method that returns a random emoji from list
-export function getRandomEmoji() {
-  const emojiList = ['😭','😄','😌','🤓','😎','😤','🤖','😶‍🌫️','🌏','📸','💿','👋','🌊','✨'];
-  return emojiList[Math.floor(Math.random() * emojiList.length)];
-}
-
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function formatOpenShotsAllPlayers(shots) {
+  // Format the shots object into a table with player names and open shots
+  let formattedShots = 'Open Shots:\n';
+  for (const playerId in shots) {
+    const player = shots[playerId];
+    formattedShots += `${player.name}: ${player.open_shots}\n`;
+  }
+  return formattedShots;
+}
+
+export async function getUsernameFromId(id) {
+  // Fetch the username from the Discord API using the user ID
+  const res = await DiscordRequest(`/users/${id}`, {
+    method: 'GET',
+  });
+  const user = await res.json();
+  // Return the user's handle or throw an error if not found
+  if (user)
+    // Format the username as @username
+    return `@${user.username}`;
+  throw new Error('User not found');
 }

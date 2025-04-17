@@ -17,7 +17,6 @@ Below is a basic overview of the project structure:
 ├── .env.sample -> sample .env file
 ├── app.js      -> main entrypoint for app
 ├── commands.js -> slash command payloads + helpers
-├── game.js     -> logic specific to RPS
 ├── utils.js    -> utility functions and enums
 ├── package.json
 ├── README.md
@@ -36,15 +35,18 @@ Configuring the app is covered in detail in the [getting started guide](https://
 ### Setup project
 
 First clone the project:
+
 ```
 git clone https://github.com/discord/discord-example-app.git
 ```
 
 Then navigate to its directory and install dependencies:
+
 ```
 cd discord-example-app
 npm install
 ```
+
 ### Get app credentials
 
 Fetch the credentials from your app's settings and add them to a `.env` file (see `.env.sample` for an example). You'll need your app ID (`APP_ID`), bot token (`DISCORD_TOKEN`), and public key (`PUBLIC_KEY`).

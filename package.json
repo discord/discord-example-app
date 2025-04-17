@@ -1,8 +1,8 @@
 {
-  "name": "discord-getting-started",
+  "name": "discord-shots-counter",
   "private": true,
   "version": "1.0.0",
-  "description": "Discord example app",
+  "description": "Shots Counter for Discord",
   "main": "app.js",
   "type": "module",
   "engines": {
@@ -18,7 +18,8 @@
   "dependencies": {
     "discord-interactions": "^4.0.0",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
