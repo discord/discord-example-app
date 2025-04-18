@@ -38,13 +38,16 @@ export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function formatOpenShotsAllPlayers(shots) {
-  // Format the shots object into a table with player names and open shots
-  let formattedShots = 'Open Shots:\n';
+export function getAllOpenShotsFormatted(shots) {
+  // Format the shots object into an ASCII table with player names and open shots
+  let formattedShots = '```\n';
+  formattedShots += 'Player Name       | Open Shots\n';
+  formattedShots += '------------------|-----------\n';
   for (const playerId in shots) {
     const player = shots[playerId];
-    formattedShots += `${player.name}: ${player.open_shots}\n`;
+    formattedShots += `${player.name.padEnd(18)}| ${player.open_shots}\n`;
   }
+  formattedShots += '```';
   return formattedShots;
 }
 
@@ -59,4 +62,9 @@ export async function getUsernameFromId(id) {
     // Format the username as @username
     return `@${user.username}`;
   throw new Error('User not found');
+}
+
+export async function deletePreviousMessage(token, messageId) {
+  const endpoint = `webhooks/${process.env.APP_ID}/${token}/messages/${messageId}`;
+  await DiscordRequest(endpoint, { method: 'DELETE' });
 }
