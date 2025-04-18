@@ -10,9 +10,9 @@ services:
       - "30000-30100:3000"
     environment:
       - NODE_ENV=production
-      - APP_ID=${DISCORD_APP_ID}
+      - APP_ID=${APP_ID}
       - DISCORD_TOKEN=${DISCORD_TOKEN}
-      - PUBLIC_KEY=${DISCORD_PUBLIC_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
     volumes:
       - ./data:/app/data
       - ./config:/app/config
