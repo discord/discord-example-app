@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   build-and-push:
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
