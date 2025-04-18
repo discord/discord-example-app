@@ -16,4 +16,3 @@ services:
       - DB_PATH=/app/data/database.db
     volumes:
       - ./data:/app/data
-      - ./config:/app/config
