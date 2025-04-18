@@ -1,0 +1,16 @@
+
+services:
+  discord-shots-counter:
+    build:
+      context: https://github.com/FlorianObermayer/discord-shots-counter.git#main
+      dockerfile: Dockerfile
+    container_name: discord-shots-counter
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DISCORD_APP_ID=${DISCORD_APP_ID}
+      - TOKEN=${DISCORD_TOKEN}
+      - DISCORD_PUBLIC_KEY=${DISCORD_PUBLIC_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
