@@ -264,7 +264,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       const result = res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `### You fucking liar. That will cost you another shot!\n<@here>: Please punish the filthy liar <@${offender}>!`,
+          content: `### You fucking liar. That will cost you another shot!\n@here: Please punish the filthy liar <@${offender}>!`,
         }
       });
 
