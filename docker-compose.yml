@@ -7,7 +7,7 @@ services:
     container_name: discord-shots-counter
     restart: unless-stopped
     ports:
-      - "30000-30100:3000"
+      - "${PORT:-3000}:3000"
     environment:
       - NODE_ENV=production
       - APP_ID=${APP_ID}
