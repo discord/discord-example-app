@@ -14,8 +14,9 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app ./
 
 # For SQLite (ensure write permissions)
+RUN useradd node
 RUN mkdir -p /app/data && chown -R node:node /app/data
-USER node
+USER node:node
 COPY --chown=node:node . .
 
 CMD ["node", "app.js"]
