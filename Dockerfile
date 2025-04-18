@@ -39,7 +39,4 @@ USER appuser
 ENV NODE_ENV=production
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=3s \
-    CMD node -e "require('http').get('http://localhost:3000/health', (r) => {if(r.statusCode !== 200) throw new Error()})"
-
 CMD ["node", "app.js"]
