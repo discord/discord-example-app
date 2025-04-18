@@ -10,11 +10,11 @@ import {
 } from 'discord-interactions';
 import { capitalize, getAllOpenShotsFormatted, deletePreviousMessage } from './utils.js';
 import db from './database.js';
-import { getViolationDescription, getViolations } from './violations.js';
+import { getRandomViolationDescription as getRandomViolationDescription, getViolations } from './violations.js';
 import usernameCache from './usernameCache.js';
 
 
-async function listAllShotsChannelMessage(isPrivate) {
+async function listAllShotsChannelMessage(isPublic) {
 
   const dbShots = await db.getAllOpenShots();
 
@@ -27,14 +27,12 @@ async function listAllShotsChannelMessage(isPrivate) {
     };
   }));
 
-  console.log('shots', shots);
-
   const shotsFormatted = getAllOpenShotsFormatted(shots);
 
   return {
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      flags: isPrivate ? InteractionResponseFlags.EPHEMERAL : 0,
+      flags: isPublic ? InteractionResponseFlags.EPHEMERAL : 0,
       content: shotsFormatted,
     },
   };
@@ -54,7 +52,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
   // Interaction type and data
   const { type, id, data } = req.body;
 
-  //console.log('INTERACTION::body', req.body);
+  // console.log('INTERACTION::body', req.body);
 
   /**
    * Handle verification requests
@@ -69,6 +67,42 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
+
+    if (name === 'redeem_shot') {
+      // redeem 1 shot for the user
+      const offender = req.body.member.user.id;
+      const result = res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.EPHEMERAL,
+          content: `### Confirm drinking a shot`,
+          // Selects are inside of action rows
+          components: [
+            {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+                {
+                  type: MessageComponentTypes.BUTTON,
+                  // Value for your app to identify the select menu interactions
+                  custom_id: 'accept_redeem_button_offender=' + offender,
+                  style: ButtonStyleTypes.PRIMARY,
+                  label: 'I chugged one',
+                },
+                {
+                  type: MessageComponentTypes.BUTTON,
+                  // Value for your app to identify the select menu interactions
+                  custom_id: 'cancel_redeem_button_offender=' + offender,
+                  style: ButtonStyleTypes.DANGER,
+                  label: 'I Lied',
+                },
+              ]
+            }
+          ],
+        },
+      });
+
+      return result;
+    }
 
     if (name === 'list_open_shots') {
       // List all open shots
@@ -117,8 +151,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
 
-    console.log('MESSAGE_COMPONENT::data', data);
-
     if (componentId === 'offender_select') {
       const result = res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -137,7 +169,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
                   custom_id: 'violation_select_offender=' + data.values[0],
                   // Select options - see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
                   options: getViolations().map((violation) => ({
-                    label: capitalize(violation) + ' - ' + getViolationDescription(violation),
+                    label: capitalize(violation),
                     value: violation,
                   })),
                   placeholder: "Select the violation",
@@ -158,7 +190,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       const offender = componentId.split('=')[1];
       const violation = data.values[0];
 
-      console.log('offender', offender);
       const result = res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -172,14 +203,14 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
                 {
                   type: MessageComponentTypes.BUTTON,
                   // Value for your app to identify the select menu interactions
-                  custom_id: 'accept_button_offender=' + offender + ',violation=' + violation,
+                  custom_id: 'accept_shot_button_offender=' + offender + ',violation=' + violation,
                   style: ButtonStyleTypes.PRIMARY,
                   label: 'Confirm',
                 },
                 {
                   type: MessageComponentTypes.BUTTON,
                   // Value for your app to identify the select menu interactions
-                  custom_id: 'cancel_button',
+                  custom_id: 'cancel_shot_button',
                   style: ButtonStyleTypes.SECONDARY,
                   label: 'Cancel',
                 },
@@ -193,17 +224,20 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       return result;
     }
 
-    if (componentId.startsWith('accept_button_')) {
+    if (componentId.startsWith('accept_shot_button_')) {
       // get the associated game ID
       const offender = componentId.split('=')[1].split(',')[0];
       const violation = componentId.split(',')[1].split('=')[1];
+
+      console.log('offender', offender);
+      console.log('violation', violation);
 
       await db.addShot(offender, violation);
 
       const result = res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `### Violation confirmed.\n<@${offender}> has to take a shot for **${capitalize(violation)}** - *${getViolationDescription(violation)}*.`,
+          content: `### Violation confirmed.\n<@${offender}> has to take a shot for **${capitalize(violation)}**\n\n> ${getRandomViolationDescription(violation)}.`,
         }
       });
 
@@ -211,7 +245,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       return result;
     }
 
-    if (componentId === 'cancel_button') {
+    if (componentId === 'cancel_shot_button') {
       const result = res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -223,7 +257,39 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       await deletePreviousMessage(req.body.token, req.body.message.id);
       return result;
     }
+
+    if (componentId.startsWith('cancel_redeem_button_')) {
+      const offender = componentId.split('=')[1];
+      const result = res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `### You fucking liar. That will cost you another shot!\n<@here>: Please punish the filthy liar <@${offender}>!`,
+        }
+      });
+
+      await deletePreviousMessage(req.body.token, req.body.message.id);
+      return result;
+    }
+
+    if (componentId.startsWith('accept_redeem_button_')) {
+      // get the associated game ID
+      const offender = componentId.split('=')[1].split(',')[0];
+      const { redeemed, violationType } = await db.redeemShot(offender);
+      const content = redeemed ? `### Shot redemption confirmed.\n<@${offender}> took a shot for **${capitalize(violationType)}**.` : `### <@${offender}> is an absolute alcoholic. They didn't have to drink but hey, enjoy! Maybe you actually start hitting the ball soon!`
+
+      const result = res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: content,
+        }
+      });
+
+      await deletePreviousMessage(req.body.token, req.body.message.id);
+      return result;
+    }
   }
+
+
 
   console.error('unknown interaction type', type);
   return res.status(400).json({ error: 'unknown interaction type' });

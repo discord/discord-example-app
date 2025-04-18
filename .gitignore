@@ -1,3 +1,4 @@
 node_modules
 .env
 shot_results.db
+.test.shot_results.db

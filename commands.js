@@ -1,21 +1,5 @@
 import 'dotenv/config';
-import { getViolationDescription, getViolations } from './violations.js';
-import { capitalize, InstallGlobalCommands } from './utils.js';
-
-// Get the game choices from violations.js
-function createCommandChoices() {
-  const violations = getViolations();
-  const commandChoices = [];
-
-  for (let violation of violations) {
-    commandChoices.push({
-      name: capitalize(violation),
-      value: getViolationDescription(violation),
-    });
-  }
-
-  return commandChoices;
-}
+import { InstallGlobalCommands } from './utils.js';
 
 const LIST_OPEN_SHOTS_COMMAND = {
   name: 'list_open_shots',
@@ -25,31 +9,23 @@ const LIST_OPEN_SHOTS_COMMAND = {
   contexts: [0, 2],
 };
 
-
-// Command containing options
-const SHOT_COMMAND = {
-  name: 'shot',
-  description: 'Note a shot for a player due to a violation',
-// options: [
-//   {
-//     type: 3,
-//     name: 'violation',
-//     description: 'Pick the violation',
-//     required: false,
-//     choices: createCommandChoices(),
-//   },
-//   {
-//     type: 3,
-//     name: 'username',
-//     description: 'Tag the user who has to take the shot (starting with @)',
-//     required: false,
-//   },
-// ],
+const REDEEM_SHOT_COMMAND = {
+  name: 'redeem_shot',
+  description: 'Redeem a shot for yourself',
   type: 1,
   integration_types: [0, 1],
   contexts: [0, 2],
 };
 
-const ALL_COMMANDS = [LIST_OPEN_SHOTS_COMMAND, SHOT_COMMAND];
+// Command containing options
+const SHOT_COMMAND = {
+  name: 'shot',
+  description: 'Add a shot for a player due to a violation',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 2],
+};
+
+const ALL_COMMANDS = [LIST_OPEN_SHOTS_COMMAND, SHOT_COMMAND, REDEEM_SHOT_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
