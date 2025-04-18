@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     container_name: discord-shots-counter
     restart: unless-stopped
+    ports:
+      - "30000-30100:3000"
     environment:
       - NODE_ENV=production
       - APP_ID=${DISCORD_APP_ID}
