@@ -8,9 +8,9 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - DISCORD_APP_ID=${DISCORD_APP_ID}
-      - TOKEN=${DISCORD_TOKEN}
-      - DISCORD_PUBLIC_KEY=${DISCORD_PUBLIC_KEY}
+      - APP_ID=${DISCORD_APP_ID}
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - PUBLIC_KEY=${DISCORD_PUBLIC_KEY}
     volumes:
       - ./data:/app/data
       - ./config:/app/config
