@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   discord-shots-counter:
@@ -15,4 +16,9 @@ services:
       - PUBLIC_KEY=${PUBLIC_KEY}
       - DB_PATH=/app/data/database.db
     volumes:
-      - ./data:/app/data
+      - shots_db_data:/app/data:nocopy  # Named volume with nocopy option
+    user: "1001:1001"  # Matches the UID/GID in Dockerfile
+
+volumes:
+  shots_db_data:
+    name: discord-shots-data  # Explicit named volume
