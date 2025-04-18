@@ -16,3 +16,12 @@ services:
     volumes:
       - ./data:/app/data
       - ./config:/app/config
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=test
+    volumes:
+      - ./:/app
+    command: npm test

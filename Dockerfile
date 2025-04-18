@@ -4,7 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build # If you have a build step
+# register discord commands
+RUN npm run register
 
 # Stage 2: Run
 FROM node:slim
@@ -16,4 +17,4 @@ COPY --from=builder /app ./
 RUN mkdir -p /app/data && chown node:node /app/data
 USER node
 
-CMD ["node", "app.js"] # Replace with your entry file
+CMD ["node", "app.js"]
