@@ -12,10 +12,8 @@ import { capitalize, getAllOpenShotsFormatted, deletePreviousMessage } from './u
 import db from './database.js';
 import { getRandomViolationDescription as getRandomViolationDescription, getViolations } from './violations.js';
 import usernameCache from './usernameCache.js';
-import { listAll } from './envHelper.js';
 
 console.log('Starting server...');
-console.log('Environment:', listAll());
 
 async function listAllShotsChannelMessage(isPublic) {
 

@@ -1,9 +1,9 @@
 import sqlite3 from 'sqlite3';
-import { isTestEnvironment } from './envHelper.js';
+import { databasePath, isTestEnvironment } from './envHelper.js';
 
 class DatabaseService {
     constructor(testing = false) {
-        const dbPath = testing ? './.test.shot_results.db' : './shot_results.db';
+        const dbPath = testing ? './.test.database.db' : databasePath();
         this.db = new sqlite3.Database(dbPath, (err) => {
             if (err) {
                 console.error('Database connection error:', err);

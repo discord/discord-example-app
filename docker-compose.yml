@@ -13,6 +13,7 @@ services:
       - APP_ID=${APP_ID}
       - DISCORD_TOKEN=${DISCORD_TOKEN}
       - PUBLIC_KEY=${PUBLIC_KEY}
+      - DB_PATH=/app/data/database.db
     volumes:
       - ./data:/app/data
       - ./config:/app/config

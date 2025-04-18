@@ -3,6 +3,6 @@ export function isTestEnvironment() {
       process.env.MOCHA_RUNNING === 'true';
 }
 
-export function listAll() {
-  return Object.entries(process.env).map(([key, value]) => `${key}=${value}`);
+export function databasePath() {
+  return process.env.DB_PATH || './database.db';
 }
