@@ -6,6 +6,9 @@ on:
   pull_request:
     branches:
       - main
+  merge_group:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +19,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '22.x'
-    - name: Run Yarn 
-      run: yarn
-    - name: Run tests
-      run: yarn test
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
