@@ -37,5 +37,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            FlorianObermayer/discord-shots-counter:latest
-            ghcr.io/FlorianObermayer/discord-shots-counter:latest
+            florianobermayer/discord-shots-counter:latest
+            ghcr.io/florianobermayer/discord-shots-counter:latest
