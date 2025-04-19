@@ -19,7 +19,6 @@ export const COMMANDS = {
     contexts: [0, 2],
   },
 
-  // Command containing options
   SHOT_COMMAND: {
     name: 'shot',
     description: 'Add a shot for a player due to a violation',

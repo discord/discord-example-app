@@ -37,7 +37,7 @@ async function listAllShotsChannelMessage(isPublic) {
   return {
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      flags: isPublic ? InteractionResponseFlags.EPHEMERAL : 0,
+      flags: !isPublic ? InteractionResponseFlags.EPHEMERAL : 0,
       content: shotsFormatted,
     },
   };
