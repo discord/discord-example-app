@@ -18,6 +18,6 @@ jobs:
       - uses: sibiraj-s/action-eslint@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
-          eslint-args: '--ignore-path=.gitignore --quiet'
+          eslint-args: '--ignore-pattern=.gitignore --quiet'
           extensions: 'js,jsx,ts,tsx'
           annotations: true
