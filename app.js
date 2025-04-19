@@ -16,7 +16,7 @@ import { databasePath } from './envHelper.js';
 
 console.log('Starting server...');
 
-const db = createDatabaseService(databasePath());
+const db = await createDatabaseService(databasePath());
 
 async function listAllShotsChannelMessage(isPublic) {
 

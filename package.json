@@ -26,6 +26,9 @@
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.26.3",
     "@babel/preset-env": "^7.26.9",
+    "@eslint/js": "^9.25.0",
+    "eslint": "^9.25.0",
+    "globals": "^16.0.0",
     "jest": "^29.7.0",
     "nodemon": "^3.0.0"
   }
