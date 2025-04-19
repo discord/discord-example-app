@@ -9,11 +9,14 @@ import {
   ButtonStyleTypes,
 } from 'discord-interactions';
 import { capitalize, getAllOpenShotsFormatted, deletePreviousMessage } from './utils.js';
-import db from './database.js';
+import { createDatabaseService } from './database.js';
 import { getRandomViolationDescription as getRandomViolationDescription, getViolations } from './violations.js';
 import usernameCache from './usernameCache.js';
+import { databasePath } from './envHelper.js';
 
 console.log('Starting server...');
+
+const db = createDatabaseService(databasePath());
 
 async function listAllShotsChannelMessage(isPublic) {
 
