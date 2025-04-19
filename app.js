@@ -13,6 +13,7 @@ import { createDatabaseService } from './database.js';
 import { getRandomViolationDescription as getRandomViolationDescription, getViolations } from './violations.js';
 import usernameCache from './usernameCache.js';
 import { databasePath } from './envHelper.js';
+import { COMMANDS } from './commands.js';
 
 console.log('Starting server...');
 
@@ -72,7 +73,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
 
-    if (name === 'redeem_shot') {
+    if (name === COMMANDS.REDEEM_SHOT_COMMAND.name) {
       // redeem 1 shot for the user
       const offender = req.body.member.user.id;
       const result = res.send({
@@ -108,13 +109,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       return result;
     }
 
-    if (name === 'list_open_shots') {
+    if (name === COMMANDS.LIST_OPEN_SHOTS_COMMAND.name) {
       // List all open shots
       return res.send(await listAllShotsChannelMessage(true));
     }
 
     // shot command
-    if (name === 'shot') {
+    if (name === COMMANDS.SHOT_COMMAND.name) {
 
       const result = res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
