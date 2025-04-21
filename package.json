@@ -17,10 +17,23 @@
   "license": "MIT",
   "dependencies": {
     "discord-interactions": "^4.0.0",
-    "dotenv": "^16.0.3",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.5.0",
     "express": "^4.18.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
-  }
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenyen11111/discord-example-app.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/chenyen11111/discord-example-app/issues"
+  },
+  "homepage": "https://github.com/chenyen11111/discord-example-app#readme"
 }
