@@ -33,7 +33,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
                   type: MessageComponentTypes.STRING_SELECT,
                   // Value for your app to identify the select menu interactions
                   custom_id: 'my_select',
-                  // Select options - see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+                  // Select options - see https://discord.com/developers/docs/components/reference#string-select
                   options: [
                     {
                       label: 'Option #1',
