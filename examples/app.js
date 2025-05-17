@@ -107,7 +107,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
   /**
    * Handle requests from interactive components
-   * See https://discord.com/developers/docs/interactions/message-components#responding-to-a-component-interaction
+   * See https://discord.com/developers/docs/components/using-message-components#using-message-components-with-interactions
    */
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
