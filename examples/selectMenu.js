@@ -23,9 +23,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: 'A message with a button',
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
           // Selects are inside of action rows
           components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              text: 'What is your object of choice?',
+            },
             {
               type: MessageComponentTypes.ACTION_ROW,
               components: [
