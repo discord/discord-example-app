@@ -29,7 +29,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
           components: [
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
-              text: 'A message with a button',
+              content: 'A message with a button',
             },
             {
               type: MessageComponentTypes.ACTION_ROW,

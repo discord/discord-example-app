@@ -28,7 +28,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
           components: [
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
-              text: 'What is your object of choice?',
+              content: 'What is your object of choice?',
             },
             {
               type: MessageComponentTypes.ACTION_ROW,
