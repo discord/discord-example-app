@@ -23,9 +23,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: 'A message with a button',
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
           // Selects are inside of action rows
           components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: 'What is your object of choice?',
+            },
             {
               type: MessageComponentTypes.ACTION_ROW,
               components: [
@@ -33,7 +37,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
                   type: MessageComponentTypes.STRING_SELECT,
                   // Value for your app to identify the select menu interactions
                   custom_id: 'my_select',
-                  // Select options - see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+                  // Select options - see https://discord.com/developers/docs/components/reference#string-select
                   options: [
                     {
                       label: 'Option #1',

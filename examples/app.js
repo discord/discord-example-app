@@ -47,8 +47,14 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          // Fetches a random emoji to send from a helper function
-          content: `hello world ${getRandomEmoji()}`,
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              // Fetches a random emoji to send from a helper function
+              content: `hello world ${getRandomEmoji()}`
+            }
+          ]
         },
       });
     }
@@ -71,9 +77,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          // Fetches a random emoji to send from a helper function
-          content: `Rock papers scissors challenge from <@${userId}>`,
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
           components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              // Fetches a random emoji to send from a helper function
+              content: `Rock papers scissors challenge from <@${userId}>`,
+            },
             {
               type: MessageComponentTypes.ACTION_ROW,
               components: [
@@ -97,7 +107,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
   /**
    * Handle requests from interactive components
-   * See https://discord.com/developers/docs/interactions/message-components#responding-to-a-component-interaction
+   * See https://discord.com/developers/docs/components/using-message-components#using-message-components-with-interactions
    */
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
@@ -112,10 +122,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         await res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: 'What is your object of choice?',
             // Indicates it'll be an ephemeral message
-            flags: InteractionResponseFlags.EPHEMERAL,
+            flags: InteractionResponseFlags.EPHEMERAL | InteractionResponseFlags.IS_COMPONENTS_V2,
             components: [
+              {
+                type: MessageComponentTypes.TEXT_DISPLAY,
+                content: 'What is your object of choice?',
+              },
               {
                 type: MessageComponentTypes.ACTION_ROW,
                 components: [
@@ -161,14 +174,26 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           // Send results
           await res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: { content: resultStr },
+            data: { 
+              flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+              components: [
+                {
+                  type: MessageComponentTypes.TEXT_DISPLAY,
+                  content: resultStr
+                }
+              ]
+             },
           });
           // Update ephemeral message
           await DiscordRequest(endpoint, {
             method: 'PATCH',
             body: {
-              content: 'Nice choice ' + getRandomEmoji(),
-              components: [],
+              components: [
+                {
+                  type: MessageComponentTypes.TEXT_DISPLAY,
+                  content: 'Nice choice ' + getRandomEmoji()
+                }
+              ],
             },
           });
         } catch (err) {

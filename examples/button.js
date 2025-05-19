@@ -24,9 +24,13 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: 'A message with a button',
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
           // Buttons are inside of action rows
           components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: 'A message with a button',
+            },
             {
               type: MessageComponentTypes.ACTION_ROW,
               components: [

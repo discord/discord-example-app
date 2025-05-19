@@ -91,7 +91,7 @@ export function getShuffledOptions() {
 
   for (let c of allChoices) {
     // Formatted for select menus
-    // https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+    // https://discord.com/developers/docs/components/reference#string-select-select-option-structure
     options.push({
       label: capitalize(c),
       value: c.toLowerCase(),

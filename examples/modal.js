@@ -31,7 +31,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), function 
               type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
-                  // See https://discord.com/developers/docs/interactions/message-components#text-inputs-text-input-structure
+                  // See https://discord.com/developers/docs/components/reference#text-input
                   type: MessageComponentTypes.INPUT_TEXT,
                   custom_id: 'my_text',
                   style: 1,
