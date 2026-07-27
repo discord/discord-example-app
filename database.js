@@ -60,6 +60,22 @@ export async function getExitSettings(guildId) {
   return result.rows[0] ?? null;
 }
 
+export async function isMediaOnlyChannel(guildId, channelId) {
+  const result = await getPool().query(
+    `
+      SELECT EXISTS (
+        SELECT 1
+        FROM media_only_channels
+        WHERE guild_id = $1
+          AND channel_id = $2
+      ) AS "isMediaOnly"
+    `,
+    [guildId, channelId],
+  );
+
+  return result.rows[0]?.isMediaOnly === true;
+}
+
 export async function recordGuildRuntimeStatus(
   guildIds,
   { connected, startedAt },

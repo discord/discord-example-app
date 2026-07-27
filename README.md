@@ -13,6 +13,10 @@ Enabled member-exit settings use that shared database as well. When a human
 member leaves, the bot sends the configured plain-text message or embed with
 all mentions suppressed.
 
+The bot also enforces configured media-only channels. Human messages without
+an image or video upload or a Discord sticker are removed; captions remain
+allowed on eligible media posts.
+
 While connected, the bot also updates `bot_guild_status` every 30 seconds for
 guilds already known to the panel. The dashboard treats a connected heartbeat
 as online for 90 seconds, allowing crashes or network loss to age into an
@@ -27,9 +31,10 @@ PORT=3001
 ```
 
 In the Discord Developer Portal, open **Bot** and enable **Server Members
-Intent** under **Privileged Gateway Intents**. The bot also needs **View
-Channels**, **Send Messages**, and **Embed Links** in each configured welcome
-channel.
+Intent** and **Message Content Intent** under **Privileged Gateway Intents**.
+The bot needs **View Channels**, **Send Messages**, and **Embed Links** in each
+configured member-message channel. Media-only channels also require **Read
+Message History** and **Manage Messages**.
 
 Start the HTTP interactions endpoint and Gateway connection together:
 
