@@ -38,6 +38,28 @@ export async function getWelcomeSettings(guildId) {
   return result.rows[0] ?? null;
 }
 
+export async function getExitSettings(guildId) {
+  const result = await getPool().query(
+    `
+      SELECT
+        enabled,
+        channel_id AS "channelId",
+        format,
+        title_template AS "titleTemplate",
+        body_template AS "bodyTemplate",
+        embed_color AS "embedColor",
+        include_timestamp AS "includeTimestamp"
+      FROM exit_settings
+      WHERE guild_id = $1
+        AND enabled = TRUE
+      LIMIT 1
+    `,
+    [guildId],
+  );
+
+  return result.rows[0] ?? null;
+}
+
 export async function recordGuildRuntimeStatus(
   guildIds,
   { connected, startedAt },

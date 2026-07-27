@@ -8,6 +8,7 @@ import {
   closeDatabase,
   recordGuildRuntimeStatus,
 } from './database.js';
+import { sendExitMessage } from './exit.js';
 import { sendWelcomeMessage } from './welcome.js';
 
 const HEARTBEAT_INTERVAL_MS = 30_000;
@@ -87,6 +88,17 @@ export async function startGateway() {
     } catch (error) {
       console.error(
         `Could not send welcome message for guild ${member.guild.id}:`,
+        error,
+      );
+    }
+  });
+
+  client.on(Events.GuildMemberRemove, async (member) => {
+    try {
+      await sendExitMessage(member);
+    } catch (error) {
+      console.error(
+        `Could not send exit message for guild ${member.guild.id}:`,
         error,
       );
     }

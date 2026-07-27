@@ -9,6 +9,10 @@ configuration saved by the TELEMATIC web panel whenever a human member joins.
 It reads directly from the web panel's PostgreSQL `welcome_settings` table, so
 the bot and panel must use the same database.
 
+Enabled member-exit settings use that shared database as well. When a human
+member leaves, the bot sends the configured plain-text message or embed with
+all mentions suppressed.
+
 While connected, the bot also updates `bot_guild_status` every 30 seconds for
 guilds already known to the panel. The dashboard treats a connected heartbeat
 as online for 90 seconds, allowing crashes or network loss to age into an
@@ -33,7 +37,7 @@ Start the HTTP interactions endpoint and Gateway connection together:
 npm start
 ```
 
-Run the welcome-message unit tests:
+Run the member-message unit tests:
 
 ```bash
 npm test
