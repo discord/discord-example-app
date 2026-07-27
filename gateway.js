@@ -9,14 +9,17 @@ import {
   recordGuildRuntimeStatus,
 } from './database.js';
 import { sendExitMessage } from './exit.js';
+import { pollGameServerStatuses } from './game-monitor.js';
 import { enforceMediaOnlyMessage } from './media-only.js';
 import { sendWelcomeMessage } from './welcome.js';
 
 const HEARTBEAT_INTERVAL_MS = 30_000;
+const GAME_STATUS_INTERVAL_MS = 60_000;
 const processStartedAt = new Date();
 
 let client;
 let heartbeatTimer;
+let gameStatusTimer;
 
 function getConnectedGuildIds() {
   return client ? [...client.guilds.cache.keys()] : [];
@@ -43,6 +46,24 @@ function startHeartbeat() {
   heartbeatTimer.unref();
 }
 
+async function updateGameServerStatuses() {
+  try {
+    await pollGameServerStatuses(getConnectedGuildIds());
+  } catch (error) {
+    console.error('Could not update game server statuses:', error);
+  }
+}
+
+function startGameStatusPolling() {
+  clearInterval(gameStatusTimer);
+  gameStatusTimer = setInterval(() => {
+    if (client?.isReady()) {
+      void updateGameServerStatuses();
+    }
+  }, GAME_STATUS_INTERVAL_MS);
+  gameStatusTimer.unref();
+}
+
 export async function startGateway() {
   if (!process.env.DISCORD_TOKEN) {
     console.warn('Gateway disabled: DISCORD_TOKEN is not configured');
@@ -66,11 +87,14 @@ export async function startGateway() {
   client.once(Events.ClientReady, (readyClient) => {
     console.log(`Discord gateway ready as ${readyClient.user.tag}`);
     void writeRuntimeStatus(getConnectedGuildIds(), true);
+    void updateGameServerStatuses();
     startHeartbeat();
+    startGameStatusPolling();
   });
 
   client.on(Events.GuildCreate, (guild) => {
     void writeRuntimeStatus([guild.id], true);
+    void updateGameServerStatuses();
   });
 
   client.on(Events.GuildDelete, (guild) => {
@@ -83,6 +107,7 @@ export async function startGateway() {
 
   client.on(Events.ShardReady, () => {
     void writeRuntimeStatus(getConnectedGuildIds(), true);
+    void updateGameServerStatuses();
   });
 
   client.on(Events.GuildMemberAdd, async (member) => {
@@ -127,7 +152,9 @@ export async function startGateway() {
 
 export async function stopGateway() {
   clearInterval(heartbeatTimer);
+  clearInterval(gameStatusTimer);
   heartbeatTimer = undefined;
+  gameStatusTimer = undefined;
   await writeRuntimeStatus(getConnectedGuildIds(), false);
   client?.destroy();
   client = undefined;

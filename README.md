@@ -17,6 +17,11 @@ The bot also enforces configured media-only channels. Human messages without
 an image or video upload or a Discord sticker are removed; captions remain
 allowed on eligible media posts.
 
+Enabled game-server entries are queried every 60 seconds while the bot is
+connected to their Discord guild. FiveM, Assetto Corsa, Minecraft Java and
+Bedrock, and BeamMP use their native GameDig adapters. Roblox uses the official
+universe API. Normalized results are stored for the dashboard.
+
 While connected, the bot also updates `bot_guild_status` every 30 seconds for
 guilds already known to the panel. The dashboard treats a connected heartbeat
 as online for 90 seconds, allowing crashes or network loss to age into an

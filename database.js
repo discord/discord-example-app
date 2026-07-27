@@ -76,6 +76,72 @@ export async function isMediaOnlyChannel(guildId, channelId) {
   return result.rows[0]?.isMediaOnly === true;
 }
 
+export async function getEnabledGameServers(guildIds) {
+  if (guildIds.length === 0) {
+    return [];
+  }
+
+  const result = await getPool().query(
+    `
+      SELECT
+        id,
+        guild_id AS "guildId",
+        name,
+        provider,
+        host,
+        port,
+        universe_id AS "universeId",
+        place_id AS "placeId"
+      FROM game_servers
+      WHERE enabled = TRUE
+        AND guild_id = ANY($1::varchar[])
+      ORDER BY created_at, id
+    `,
+    [guildIds],
+  );
+
+  return result.rows;
+}
+
+export async function recordGameServerStatus(gameServerId, status) {
+  await getPool().query(
+    `
+      INSERT INTO game_server_statuses (
+        game_server_id,
+        online,
+        player_count,
+        max_players,
+        latency_ms,
+        map_name,
+        status_text,
+        checked_at,
+        updated_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $8)
+      ON CONFLICT (game_server_id)
+      DO UPDATE SET
+        online = EXCLUDED.online,
+        player_count = EXCLUDED.player_count,
+        max_players = EXCLUDED.max_players,
+        latency_ms = EXCLUDED.latency_ms,
+        map_name = EXCLUDED.map_name,
+        status_text = EXCLUDED.status_text,
+        checked_at = EXCLUDED.checked_at,
+        updated_at = EXCLUDED.updated_at
+    `,
+    [
+      gameServerId,
+      status.online,
+      status.playerCount,
+      status.maxPlayers,
+      status.latencyMs,
+      status.mapName,
+      status.statusText,
+      status.checkedAt,
+    ],
+  );
+}
+
 export async function recordGuildRuntimeStatus(
   guildIds,
   { connected, startedAt },
