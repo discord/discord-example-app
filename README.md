@@ -2,6 +2,38 @@
 
 This project contains a basic rock-paper-scissors-style Discord app written in JavaScript, built for the [getting started guide](https://discord.com/developers/docs/getting-started).
 
+## TELEMATIC welcome delivery
+
+The bot also maintains a Discord Gateway connection and sends the welcome
+configuration saved by the TELEMATIC web panel whenever a human member joins.
+It reads directly from the web panel's PostgreSQL `welcome_settings` table, so
+the bot and panel must use the same database.
+
+Add these values to `.env`:
+
+```text
+DISCORD_TOKEN=your_bot_token
+DATABASE_URL=postgresql://user:password@host:port/database
+PORT=3001
+```
+
+In the Discord Developer Portal, open **Bot** and enable **Server Members
+Intent** under **Privileged Gateway Intents**. The bot also needs **View
+Channels**, **Send Messages**, and **Embed Links** in each configured welcome
+channel.
+
+Start the HTTP interactions endpoint and Gateway connection together:
+
+```bash
+npm start
+```
+
+Run the welcome-message unit tests:
+
+```bash
+npm test
+```
+
 ![Demo of app](https://github.com/discord/discord-example-app/raw/main/assets/getting-started-demo.gif?raw=true)
 
 ## Project structure

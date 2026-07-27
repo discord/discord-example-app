@@ -10,11 +10,12 @@ import {
 } from 'discord-interactions';
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
+import { startGateway, stopGateway } from './gateway.js';
 
 // Create an express app
 const app = express();
-// Get port, or default to 3000
-const PORT = process.env.PORT || 3000;
+// Keep local development separate from the Next.js panel on port 3000.
+const PORT = process.env.PORT || 3001;
 // To keep track of our active games
 const activeGames = {};
 
@@ -66,6 +67,25 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
   return res.status(400).json({ error: 'unknown interaction type' });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log('Listening on port', PORT);
+});
+
+startGateway().catch((error) => {
+  console.error('Discord gateway could not start:', error);
+});
+
+async function shutdown(signal) {
+  console.log(`Received ${signal}; shutting down`);
+  server.close();
+  await stopGateway();
+  process.exit(0);
+}
+
+process.once('SIGINT', () => {
+  void shutdown('SIGINT');
+});
+
+process.once('SIGTERM', () => {
+  void shutdown('SIGTERM');
 });
