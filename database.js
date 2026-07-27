@@ -6,7 +6,7 @@ let pool;
 
 function getPool() {
   if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL is required for welcome-message delivery');
+    throw new Error('DATABASE_URL is required for bot database access');
   }
 
   pool ??= new Pool({
@@ -36,6 +36,44 @@ export async function getWelcomeSettings(guildId) {
   );
 
   return result.rows[0] ?? null;
+}
+
+export async function recordGuildRuntimeStatus(
+  guildIds,
+  { connected, startedAt },
+) {
+  if (guildIds.length === 0) {
+    return;
+  }
+
+  const recordedAt = new Date();
+
+  await getPool().query(
+    `
+      INSERT INTO bot_guild_status (
+        guild_id,
+        connected,
+        started_at,
+        last_heartbeat_at,
+        updated_at
+      )
+      SELECT
+        guilds.id,
+        $2,
+        $3,
+        $4,
+        $4
+      FROM guilds
+      WHERE guilds.id = ANY($1::varchar[])
+      ON CONFLICT (guild_id)
+      DO UPDATE SET
+        connected = EXCLUDED.connected,
+        started_at = EXCLUDED.started_at,
+        last_heartbeat_at = EXCLUDED.last_heartbeat_at,
+        updated_at = EXCLUDED.updated_at
+    `,
+    [guildIds, connected, startedAt, recordedAt],
+  );
 }
 
 export async function closeDatabase() {

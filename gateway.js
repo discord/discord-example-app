@@ -4,10 +4,42 @@ import {
   GatewayIntentBits,
 } from 'discord.js';
 
-import { closeDatabase } from './database.js';
+import {
+  closeDatabase,
+  recordGuildRuntimeStatus,
+} from './database.js';
 import { sendWelcomeMessage } from './welcome.js';
 
+const HEARTBEAT_INTERVAL_MS = 30_000;
+const processStartedAt = new Date();
+
 let client;
+let heartbeatTimer;
+
+function getConnectedGuildIds() {
+  return client ? [...client.guilds.cache.keys()] : [];
+}
+
+async function writeRuntimeStatus(guildIds, connected) {
+  try {
+    await recordGuildRuntimeStatus(guildIds, {
+      connected,
+      startedAt: processStartedAt,
+    });
+  } catch (error) {
+    console.error('Could not update bot runtime status:', error);
+  }
+}
+
+function startHeartbeat() {
+  clearInterval(heartbeatTimer);
+  heartbeatTimer = setInterval(() => {
+    if (client?.isReady()) {
+      void writeRuntimeStatus(getConnectedGuildIds(), true);
+    }
+  }, HEARTBEAT_INTERVAL_MS);
+  heartbeatTimer.unref();
+}
 
 export async function startGateway() {
   if (!process.env.DISCORD_TOKEN) {
@@ -29,6 +61,24 @@ export async function startGateway() {
 
   client.once(Events.ClientReady, (readyClient) => {
     console.log(`Discord gateway ready as ${readyClient.user.tag}`);
+    void writeRuntimeStatus(getConnectedGuildIds(), true);
+    startHeartbeat();
+  });
+
+  client.on(Events.GuildCreate, (guild) => {
+    void writeRuntimeStatus([guild.id], true);
+  });
+
+  client.on(Events.GuildDelete, (guild) => {
+    void writeRuntimeStatus([guild.id], false);
+  });
+
+  client.on(Events.ShardDisconnect, () => {
+    void writeRuntimeStatus(getConnectedGuildIds(), false);
+  });
+
+  client.on(Events.ShardReady, () => {
+    void writeRuntimeStatus(getConnectedGuildIds(), true);
   });
 
   client.on(Events.GuildMemberAdd, async (member) => {
@@ -50,6 +100,9 @@ export async function startGateway() {
 }
 
 export async function stopGateway() {
+  clearInterval(heartbeatTimer);
+  heartbeatTimer = undefined;
+  await writeRuntimeStatus(getConnectedGuildIds(), false);
   client?.destroy();
   client = undefined;
   await closeDatabase();

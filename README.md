@@ -9,6 +9,11 @@ configuration saved by the TELEMATIC web panel whenever a human member joins.
 It reads directly from the web panel's PostgreSQL `welcome_settings` table, so
 the bot and panel must use the same database.
 
+While connected, the bot also updates `bot_guild_status` every 30 seconds for
+guilds already known to the panel. The dashboard treats a connected heartbeat
+as online for 90 seconds, allowing crashes or network loss to age into an
+offline state without a separate monitoring service.
+
 Add these values to `.env`:
 
 ```text
